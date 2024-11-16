@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456       # Defina sua senha aqui
+      POSTGRES_DB: luizalabs          # Defina o nome do banco de dados aqui
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql  # Executa o script após a criação do container
+
+volumes:
+  postgres_data:
