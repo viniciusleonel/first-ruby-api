@@ -28,6 +28,7 @@ jobs:
             push: true
             tags: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/luizalabs-ruby:${{ github.sha }}
             file: ./Dockerfile
+            no-cache: true
 
   deploy:
     runs-on: ubuntu-latest
