@@ -3,6 +3,8 @@
 Este projeto é uma API simples desenvolvida em Ruby sem framework, utilizando PostgreSQL como banco de dados e Docker
 para containerização.
 
+[Link deploy Azure](https://luizalabs-ruby-a7dghshjbkcahyg3.eastus2-01.azurewebsites.net/)
+
 ## Pré-requisitos
 
 - Docker e Docker Compose instalados em sua máquina.

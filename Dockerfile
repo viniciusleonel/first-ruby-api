@@ -13,4 +13,7 @@ RUN chmod +x /usr/local/bin/wait-for-it.sh
 
 ENV DATABASE_URL=postgres://postgres:123456@db:5432/luizalabs
 
-CMD ["wait-for-it.sh", "db:5432", "--", "rackup", "-o", "0.0.0.0"]
+# Expõe a porta 9292
+EXPOSE 9292
+
+CMD ["wait-for-it.sh", "db:5432", "--", "rackup", "-o", "0.0.0.0", "-p", "9292"]
