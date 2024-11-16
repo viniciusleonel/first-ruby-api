@@ -7,6 +7,7 @@ para containerização.
 
 - Docker e Docker Compose instalados em sua máquina.
 - Ruby (versão 2.7 ou superior) instalado.
+- Clonar este repositório: https://github.com/viniciusleonel/first-ruby-api
 
 ## Passo a Passo para Iniciar o Container do Banco de Dados utilizando PostgreSQL
 
