@@ -5,7 +5,9 @@ class Database
     PG.connect(
       dbname: 'luizalabs',
       user: 'postgres',
-      password: '123456'
+      password: '123456',
+      host: 'db',
+      port: 5432
     )
   end
 end
