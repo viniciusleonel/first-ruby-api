@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "9292:9292"
     environment:
       - DATABASE_URL=postgres://postgres:123456@db:5432/luizalabs
     depends_on:
