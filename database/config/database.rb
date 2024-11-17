@@ -1,13 +1,15 @@
 require 'pg'
+require 'dotenv/load'
 
 class Database
   def self.connect
-    PG.connect(
-      dbname: 'luizalabs',
-      user: 'postgres',
-      password: '123456',
-      host: 'db',
-      port: 5432
-    )
+    db_prod_url = ENV['DATABASE_PROD_URL']
+    db_local_url = ENV['DATABASE_LOCAL_URL']
+
+    if db_prod_url.nil? || db_prod_url.empty?
+      PG.connect(db_local_url)
+    else
+      PG.connect(db_prod_url)
+    end
   end
 end

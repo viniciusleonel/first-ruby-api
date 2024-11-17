@@ -9,6 +9,7 @@ RUN bundle install
 COPY . .
 
 ENV DATABASE_URL=postgres://postgres:123456@db:5432/luizalabs
+ENV DATABASE_PROD_URL=""
 
 EXPOSE 9292
 
