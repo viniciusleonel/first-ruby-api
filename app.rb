@@ -18,13 +18,19 @@ class Application
     req = Rack::Request.new(env)
     res = Rack::Response.new
 
+    id = req.path.split('/').last.to_i if req.path.split('/').last =~ /\d/
+
     case req.path
     when '/'
       ApiController.handle_request(req, res)
     when '/users'
       UserController.handle_request(req, res)
+    when "/users/#{id}"
+      UserController.handle_request_by_id(req, res, id)
     when '/orders'
       OrderController.handle_request(req, res)
+    when "/orders/#{id}"
+      OrderController.handle_request_by_id(req, res, id)
     else
       res.status = 404
       res.write({ error: 'Not Found' }.to_json)

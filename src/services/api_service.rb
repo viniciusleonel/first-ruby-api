@@ -5,7 +5,7 @@ require_relative 'order.service'
 require_relative 'product.service'
 
 class ApiService
-  def self.get_data(page = 1, size)
+  def self.get_data(page, size)
     user_data = UserService.get_users(page, size)
     result = []
 
@@ -16,7 +16,7 @@ class ApiService
         orders: []
       }
 
-      orders = OrderService.get_orders(user['user_id'])
+      orders = OrderService.get_orders_by_user_id(user['user_id'])
 
       orders.each do |order|
         order_info = {

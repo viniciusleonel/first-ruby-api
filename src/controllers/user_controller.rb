@@ -15,4 +15,25 @@ class UserController
       res.write({ error: 'Not Found' }.to_json)
     end
   end
+
+  def self.handle_request_by_id(req, res, id)
+    if req.request_method == 'GET'
+      get_user_by_id(res,id)
+    else
+      res.status = 404
+      res.write({ error: 'Not Found' }.to_json)
+    end
+  end
+
+  def self.get_user_by_id(res, id)
+    user_data = UserService.get_user_by_id(id)
+    if user_data
+      res.status = 200
+      res['Content-Type'] = 'application/json'
+      res.write(user_data.to_json)
+    else
+      res.status = 404
+      res.write({ error: 'User Not Found' }.to_json)
+    end
+  end
 end

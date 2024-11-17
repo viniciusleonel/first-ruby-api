@@ -26,4 +26,11 @@ class UserService
   def self.create_user(user_id, user_name, connection)
     connection.exec_params("INSERT INTO users (user_id, name) VALUES ($1, $2)", [user_id, user_name])
   end
+
+  def self.get_user_by_id(id)
+    connection = Database.connect
+    user = connection.exec_params("SELECT * FROM users WHERE user_id = $1", [id]).first
+    connection.close
+    user ? { user_id: user['user_id'], name: user['name'] } : nil
+  end
 end
