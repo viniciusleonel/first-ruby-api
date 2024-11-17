@@ -1,11 +1,12 @@
+require_relative '../config/database'
+
 class CreateUsersTable
   def self.up
     connection = Database.connect
     connection.exec(<<-SQL)
       CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100),
-        email VARCHAR(100)
+        user_id INTEGER PRIMARY KEY,
+        name VARCHAR(100) NOT NULL
       );
     SQL
   end

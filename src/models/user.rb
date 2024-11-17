@@ -1,23 +1,16 @@
 require_relative '../../database/config/database'
 
 class User
-  attr_accessor :id, :name, :email
+  attr_accessor :user_id, :name, :orders
 
-  def initialize(id = nil, name, email)
-    @id = id
+  def initialize(user_id = nil, name = nil, orders = [])
+    @user_id = user_id
     @name = name
-    @email = email
+    @orders = orders
   end
 
-  def self.create(name, email)
-    connection = Database.connect
-    result = connection.exec_params("INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id", [name, email])
-    User.new(result[0]['id'], name, email)
+  def add_order(order)
+    @orders.push(order)
   end
 
-  def self.all
-    connection = Database.connect
-    result = connection.exec("SELECT * FROM users;")
-    result.map { |row| User.new(row['id'], row['name'], row['email']) }
-  end
 end
