@@ -24,10 +24,12 @@ class OrderController
   def self.get_orders(req, res)
     page = req.params['page'] ? req.params['page'].to_i : 1
     size = req.params['size'] ? req.params['size'].to_i : 5
+    start_date = req.params['start_date']
+    end_date = req.params['end_date']
 
     res.status = 200
     res['Content-Type'] = 'application/json'
-    res.write(OrderService.get_orders(page, size))
+    res.write(OrderService.get_orders(page, size, start_date, end_date))
   end
 
   def self.get_order_by_id( res, id)
