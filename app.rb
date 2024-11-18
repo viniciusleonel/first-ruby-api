@@ -4,13 +4,14 @@ require_relative 'database/migrations/migrate'
 require_relative 'src/controllers/user_controller'
 require_relative 'src/controllers/order_controller'
 require_relative 'src/controllers/api_controller'
+require_relative 'src/controllers/file_controller'
 require_relative 'src/file_processor'
 
 # Rodar as migrações
 Migrator.migrate
 
 # Processar e salvar os dados do arquivo no banco
-# file_paths = ['challenge/data_1.txt', 'challenge/data_2.txt']
+# file_paths = ['challenge/data_1.txt']
 # FileProcessor.save_data_to_db(file_paths)
 
 class Application
@@ -31,6 +32,8 @@ class Application
       OrderController.handle_request(req, res)
     when "/orders/#{id}"
       OrderController.handle_request_by_id(req, res, id)
+    when "/upload"
+      FileController.handle_request(req, res)
     else
       res.status = 404
       res.write({ error: 'Not Found' }.to_json)

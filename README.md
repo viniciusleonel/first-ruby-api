@@ -3,6 +3,8 @@
 Este projeto é uma API simples desenvolvida em Ruby sem framework, utilizando PostgreSQL como banco de dados e Docker
 para containerização.
 
+Esta API permite acessar e manipular dados de usuários, pedidos e produtos. Ela suporta operações de listagem com paginação, filtros por data, e a criação de novos registros.
+
 [Link deploy Azure](https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/users)
 
 ## Pré-requisitos
@@ -59,10 +61,109 @@ A aplicação estará disponível em `http://localhost:9292`.
    - Esta configuração é específica para rodar a API em produção, ela utiliza as configurações do arquivo arquivo [continuous delivery](.github/workflows/continuous_delivery.yml), 
 fazendo uma integração contínua e deploy automatizado utilizando **GitHub Actions**, **DockerHub** e **Microsoft Azure**.
 
-## Testar a API
+## Funcionamento da API
 
-Você pode testar a API utilizando ferramentas como o Insomnia ou Postman. Por exemplo, para criar um novo usuário, envie
-uma requisição POST para `http://localhost:9292/users` com os parâmetros `name` e `email` no corpo da requisição.
+Você pode testar a API utilizando ferramentas como o Insomnia ou Postman. 
+
+### Endpoint "/upload"
+
+- **POST**: Endpoint para envio do arquivo `.txt`
+    - **Descrição**: Este endpoint permite que o cliente envie um arquivo `.txt` que será salvo no servidor.
+
+  **Parâmetros da Requisição**:
+    - O arquivo deve ser enviado como parte de um formulário `multipart/form-data` com o campo `file`.
+
+  **Exemplo de Requisição**:
+
+  Para fazer a requisição de envio do arquivo, você pode usar o `cURL` ou ferramentas como Postman e Insomnia.
+
+  **Usando cURL**:
+    ```bash
+    curl -X POST http://localhost:3000/upload \
+         -F "file=@/caminho/para/seu/arquivo.txt"
+    ```
+
+  **Usando o Postman**:
+    1. Selecione o método `POST`.
+    2. Insira a URL `http://localhost:3000/upload`.
+    3. Vá para a aba `Body` e selecione `form-data`.
+    4. Adicione um campo `file` e marque como `File`.
+    5. Selecione o arquivo `.txt` desejado no seu computador.
+    6. Clique em `Send`.
+
+  **Respostas Esperadas**:
+    - **201 Created**: Se o arquivo for recebido e salvo com sucesso.
+      ```json
+      {
+        "message": "Arquivo 'nome_do_arquivo.txt' recebido, salvo em 'uploads/nome_do_arquivo.txt'"
+      }
+      ```
+    - **400 Bad Request**: Se o arquivo não for fornecido ou se houver um erro durante o upload (por exemplo, o arquivo já existir).
+      ```json
+      {
+        "error": "File not provided" 
+      }
+      ```
+      ou
+      ```json
+      {
+        "error": "O arquivo já existe na pasta de uploads"
+      }
+      ```
+
+    - **404 Not Found**: Se a rota chamada não for `/upload`.
+      ```json
+      {
+        "error": "Not Found"
+      }
+      ```
+
+### Endpoint "/"
+
+- **GET**: Endpoint para listagem de todos os dados como:
+     - Aceita filtros de paginação: **/?page=1&size=5**
+     ```json
+     {
+       "users": [
+         {
+           "user_id": "123",
+           "name": "John Doe",
+           "orders": [
+             {
+               "order_id": "456",
+               "total": 200.50,
+               "date": "2024-11-15",
+               "products": [
+                 {
+                   "product_id": "789",
+                   "value": 100.25
+                 }
+               ]
+             }
+           ]
+         }
+       ],
+       "page": 1,
+       "size": 5,
+       "total_users": 100,
+       "total_pages": 20
+     }
+     ```
+
+- **POST**: Salva dados de um novo pedido, usuário e produto no banco de dados.
+
+     ```json
+     {
+      "userId": "123",
+      "userName": "John Doe",
+      "orderId": "456",
+      "prodId": "789",
+      "value": 100.25,
+      "date": "2024-11-10"
+     }
+     ```
+     - Funcionalidade de tratamente de erros, caso seja fornecido um ID existente, os dados
+
 
 ## Conclusão
 
