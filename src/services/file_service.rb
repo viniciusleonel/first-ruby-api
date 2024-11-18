@@ -18,7 +18,20 @@ class FileService
     filepath
   end
 
-  def self.save_data_to_db(file_path)
+  def self.delete_file(filename)
+    uploads_folder = "uploads"
+    filepath = "#{uploads_folder}/#{filename}"
+
+    if File.exist?(filepath)
+      File.delete(filepath)
+      puts "Arquivo '#{filename}' deletado com sucesso."
+    else
+      puts "Erro: O arquivo '#{filename}' não foi encontrado."
+    end
+  end
+
+
+  def self.save_data_to_db(file_path, filename)
     connection = Database.connect
 
     Async do
@@ -58,6 +71,8 @@ class FileService
         end
 
         puts "Processamento completo!"
+
+        delete_file(filename)
       end
     ensure
       connection.close if connection

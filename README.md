@@ -48,7 +48,7 @@ A aplicação estará disponível em `http://localhost:9292`.
    - Execute o seguinte comando para iniciar os containers do PostgreSQL e da aplicação:
 
       ```bash
-      docker-compose -f docker-compose.local.yml up
+      docker-compose -f docker-compose.local.yml up -d
       ```
 
    Isso irá criar primeiro um container com um banco de dados PostgreSQL (cria automaticamente a database para a aplicação).

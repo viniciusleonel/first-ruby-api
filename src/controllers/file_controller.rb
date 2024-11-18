@@ -11,30 +11,19 @@ class FileController
         file = req.params['file'][:tempfile]
         filename = req.params['file'][:filename]
 
+
         file_path = FileService.save_file(file, filename)
 
         result = FileProcessor.process_file(file_path)
 
-        res.status = 200
+        res.status = 201
         res['Content-Type'] = 'application/json'
         res.write(result.to_json)
 
-        # begin
-        #   file_path = FileService.save_file(file, filename)
-        #
-        #   res.status = 201
-        #   res['Content-Type'] = 'application/json'
-        #   res.write({ message: "Arquivo #{filename} recebido, salvo em #{file_path}" }.to_json)
-        #
-        #   # Async do
-        #   #   FileService.save_data_to_db(file_path)
-        #   # end
-        #
-        # rescue => e
-        #   res.status = 400
-        #   res['Content-Type'] = 'application/json'
-        #   res.write({ error: e.message }.to_json)
-        # end
+        Thread.new do
+          FileService.save_data_to_db(file_path, filename)
+        end
+
       else
         res.status = 400
         res.write({ error: 'File not provided' }.to_json)

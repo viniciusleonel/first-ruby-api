@@ -13,6 +13,6 @@ class CreateUsersTable
 
   def self.down
     connection = Database.connect
-    connection.exec("DROP TABLE IF EXISTS users")
+    connection.exec("DROP TABLE IF EXISTS users CASCADE")
   end
 end

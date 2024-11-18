@@ -13,29 +13,26 @@ class FileProcessor
         value = linha[75, 12].strip.to_f
         date = Date.strptime(linha[87, 8].strip, '%Y%m%d')
 
-        # Inicializar o usuário se ele ainda não estiver no hash
         users[user_id] ||= {
           user_id: user_id,
           name: name,
           orders: []
         }
 
-        # Verificar se a ordem já existe, caso contrário, criar uma nova instância de Order
         order = users[user_id][:orders].find { |o| o.order_id == order_id }
         unless order
           order = Order.new(order_id, value, date.to_s)
           users[user_id][:orders] << order
         end
 
-        # Adicionar o produto à ordem
-        order.add_product({
-                            product_id: product_id,
-                            value: value
-                          })
+        order.add_product(
+          {
+            product_id: product_id,
+            value: value
+          })
       end
     end
 
-    # Converte os dados estruturados para serem retornados em formato de hash
     users.values.map do |user|
       {
         user_id: user[:user_id],

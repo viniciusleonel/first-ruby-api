@@ -9,9 +9,9 @@ class Migrator
   end
 
   def self.rollback
-    CreateUsersTable.down
-    CreateOrdersTable.down
     CreateProductsTable.down
+    CreateOrdersTable.down
+    CreateUsersTable.down
     puts "Migration rolled back successfully."
   end
 end

@@ -16,6 +16,6 @@ class CreateOrdersTable
 
   def self.down
     connection = Database.connect
-    connection.exec("DROP TABLE IF EXISTS orders")
+    connection.exec("DROP TABLE IF EXISTS orders CASCADE")
   end
 end

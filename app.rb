@@ -8,6 +8,7 @@ require_relative 'src/controllers/file_controller'
 require_relative 'src/file_processor'
 
 # Rodar as migrações
+Migrator.rollback
 Migrator.migrate
 
 # Processar e salvar os dados do arquivo no banco
