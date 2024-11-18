@@ -15,7 +15,6 @@ class ApiController
   end
 
   def self.get_data(req, res)
-    # Pega o número da página da query string (default é 1)
     page = req.params['page'] ? req.params['page'].to_i : 1
     size = req.params['size'] ? req.params['size'].to_i : 5
 
@@ -38,17 +37,14 @@ class ApiController
       res['Content-Type'] = 'application/json'
       res.write({ message: 'Data saved successfully' }.to_json)
 
-      # Comita a transação (confirma as alterações)
       connection.exec("COMMIT")
     rescue JSON::ParserError
-      # Caso a requisição não tenha um JSON válido
       res.status = 400
       connection.exec("ROLLBACK")
       res['Content-Type'] = 'application/json'
       res.write({ error: 'Invalid JSON format' }.to_json)
 
     rescue => e
-      # Caso ocorra algum outro erro
       res.status = 500
       connection.exec("ROLLBACK")
       res['Content-Type'] = 'application/json'
