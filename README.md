@@ -87,7 +87,10 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     1. Selecione o método `POST`.
     2. Insira a URL `http://localhost:3000/upload`.
     3. Vá para a aba `Body` e selecione `form-data`.
-    4. Adicione um campo `file` e marque como `File`.
+    4. Adicione um campo com as seguintes configurações:
+       - **Key (name)**: `file`
+       - **Type**: Marque como `File`
+       - **Content-Type**: Defina como `multipart/form-data`
     5. Selecione o arquivo `.txt` desejado no seu computador.
     6. Clique em `Send`.
 
