@@ -306,6 +306,40 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     }
     ```
 
+## Testes
+
+Este projeto utiliza o framework de testes RSpec para garantir a qualidade do código. Os testes estão localizados no diretório `spec` e cobrem as funcionalidades principais da API.
+
+### Executando os Testes
+
+Para executar os testes, siga os passos abaixo:
+
+1. Certifique-se de que todas as dependências estão instaladas. Você pode fazer isso executando:
+
+   ```bash
+   bundle install
+   ```
+
+2. Execute os testes com o seguinte comando:
+
+   ```bash
+   bundle exec rspec
+   ```
+
+### Cobertura de Testes
+
+A cobertura de testes é gerada utilizando a gem `simplecov`. Após a execução dos testes, um relatório de cobertura será gerado no diretório `coverage`, que pode ser visualizado abrindo o arquivo `index.html` em um navegador.
+
+### Estrutura dos Testes
+
+Os testes estão organizados da seguinte forma:
+
+- **spec/services**: Contém testes para os serviços da aplicação, como `ApiService`, `UserService`, e `OrderService`.
+- **spec/controllers**: Contém testes para os controladores, garantindo que as requisições HTTP sejam tratadas corretamente.
+
+Para mais informações sobre como escrever e organizar testes com RSpec, consulte a [documentação oficial do RSpec](https://rspec.info/documentation/).
+
+
 ## Conclusão
 
 Agora você tem uma API em Ruby sem framework, com PostgreSQL e Docker, pronta para ser utilizada e testada. Se tiver
