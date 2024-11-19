@@ -99,8 +99,8 @@ class FileService
           date = Date.strptime(linha[87, 8].strip, '%Y%m%d')
 
           save_user(connection, name, user_id)
-          save_order(connection, date, order_id, user_id, value)
-          save_product(connection, order_id, product_id, value)
+          save_order_with_products(connection, order_id, user_id, value, date, product_id, value)
+
 
           current_line += 1
 
@@ -119,12 +119,29 @@ class FileService
 
   private
 
-  def self.save_product(connection, order_id, product_id, value)
+  def self.save_order_with_products(connection, order_id, user_id, total_value, date, product_id, value)
+    # Recuperar a ordem existente (se houver) e adicionar o novo produto
+    existing_order = connection.exec_params(
+      "SELECT products FROM orders WHERE order_id = $1", [order_id]
+    ).first
+
+    # Se a ordem existir, recuperar os produtos já salvos; caso contrário, começar uma nova lista de produtos
+    products = existing_order ? JSON.parse(existing_order['products']) : []
+
+    # Adicionar o novo produto à lista de produtos, mesmo que o product_id já exista
+    products << { "product_id" => product_id, "value" => value }
+
+    # Salvar ou atualizar a ordem com os produtos, permitindo duplicação de produtos
     connection.exec_params(
-      "INSERT INTO products (product_id, order_id, value) VALUES ($1, $2, $3) ON CONFLICT (product_id) DO NOTHING",
-      [product_id, order_id, value]
+      "INSERT INTO orders (order_id, user_id, total, date, products)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (order_id)
+         DO UPDATE SET total = $3, date = $4, products = $5",
+      [order_id, user_id, total_value, date, products.to_json]
     )
   end
+
+
 
   def self.save_order(connection, date, order_id, user_id, value)
     connection.exec_params(

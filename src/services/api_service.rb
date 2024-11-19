@@ -2,7 +2,6 @@ require_relative '../models/user'
 require_relative '../../database/config/database'
 require_relative 'user_service'
 require_relative 'order.service'
-require_relative 'product.service'
 
 class ApiService
   def self.get_data(page, size)
@@ -26,7 +25,7 @@ class ApiService
           products: []
         }
 
-        products = ProductService.get_products(order['order_id'])
+        products = order['products'] ? JSON.parse(order['products']) : []
 
         products.each do |product|
           product_info = {

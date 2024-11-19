@@ -12,9 +12,18 @@ class OrderService
   def self.get_order_by_id(id)
     connection = Database.connect
     order = connection.exec_params("SELECT * FROM orders WHERE order_id = $1", [id]).first
-    products = ProductService.get_products_by_order_id(id)
+
+    # Aqui, extraímos e manipulamos a coluna `products` diretamente
+    products = order ? JSON.parse(order['products']) : []
+
     connection.close
-    order ? { order_id: order['order_id'], user_id: order['user_id'], total: order['total'], date: order['date'], products: products } : nil
+    order ? {
+      order_id: order['order_id'],
+      user_id: order['user_id'],
+      total: order['total'],
+      date: order['date'],
+      products: products
+    } : nil
   end
 
   def self.get_orders(page, size, start_date, end_date)
@@ -44,12 +53,15 @@ class OrderService
 
     total_pages = (total_orders / size.to_f).ceil
 
+    # Agora os produtos serão extraídos da coluna `products` diretamente
     orders_data = orders.map do |order|
+      products = JSON.parse(order['products']) # Manipulando os produtos como JSON
       {
         order_id: order['order_id'],
         user_id: order['user_id'],
         total: order['total'],
-        date: order['date']
+        date: order['date'],
+        products: products
       }
     end
 
@@ -64,8 +76,7 @@ class OrderService
     }.to_json
   end
 
-
   def self.create_order(order_id, user_id, value, date, connection)
-      connection.exec_params("INSERT INTO orders (order_id, user_id, total, date) VALUES ($1, $2, $3, $4)", [order_id, user_id, value, date])
-    end
+    connection.exec_params("INSERT INTO orders (order_id, user_id, total, date) VALUES ($1, $2, $3, $4)", [order_id, user_id, value, date])
+  end
 end

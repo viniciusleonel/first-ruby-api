@@ -5,11 +5,12 @@ class CreateOrdersTable
     connection = Database.connect
     connection.exec(<<-SQL)
         CREATE TABLE IF NOT EXISTS orders (
-          order_id INTEGER PRIMARY KEY,
-          total NUMERIC(12, 2) NOT NULL,
+          order_id INT PRIMARY KEY,
+          user_id INT NOT NULL,
+          total DECIMAL NOT NULL,
           date DATE NOT NULL,
-          user_id INTEGER NOT NULL,
-          FOREIGN KEY (user_id) REFERENCES users(user_id)
+          products JSONB NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users (user_id)
       );
     SQL
   end
