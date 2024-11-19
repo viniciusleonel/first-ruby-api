@@ -5,7 +5,7 @@ para containerização.
 
 Esta API permite acessar e manipular dados de usuários, pedidos e produtos. Ela suporta operações de listagem com paginação, filtros por data, e a criação de novos registros.
 
-[Link deploy Azure](https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/users)
+[Link deploy Azure](https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/)
 
 ## Pré-requisitos
 
@@ -60,6 +60,8 @@ A aplicação estará disponível em `http://localhost:9292`.
 ### 3. API em produção utilizando GitHub Actions, DockerHub e MicrosoftAzure
    - Esta configuração é específica para rodar a API em produção, ela utiliza as configurações do arquivo arquivo [continuous delivery](.github/workflows/continuous_delivery.yml), 
 fazendo uma integração contínua e deploy automatizado utilizando **GitHub Actions**, **DockerHub** e **Microsoft Azure**.
+
+https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
 
 ## Fluxo da API
 
