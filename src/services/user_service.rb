@@ -5,12 +5,10 @@ class UserService
   def self.get_users(page, size)
     connection = Database.connect
 
-    # Calcula o offset com base na página
     offset = (page - 1) * size
     limit = size
 
-    # Consulta os usuários com limite e offset para paginação
-    users = connection.exec_params("SELECT * FROM users LIMIT $1 OFFSET $2", [limit, offset])
+    users = connection.exec_params("SELECT * FROM users ORDER by name LIMIT $1 OFFSET $2", [limit, offset])
     total_users = connection.exec("SELECT COUNT(*) FROM users").first['count'].to_i
     total_pages = (total_users / size.to_f).ceil
 

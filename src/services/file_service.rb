@@ -7,11 +7,11 @@ class FileService
     Dir.mkdir(uploads_folder) unless Dir.exist?(uploads_folder)
 
     filepath = "#{uploads_folder}/#{filename}"
-    if File.exist?(filepath)
-      raise "Erro: O arquivo '#{filename}' já existe na pasta de uploads."
-    end
+    # if File.exist?(filepath)
+    #   raise "Erro: O arquivo '#{filename}' já existe na pasta de uploads."
+    # end
 
-    File.open("#{uploads_folder}/#{filename}", 'wb') do |f|
+    File.open(filepath, 'wb') do |f|
       f.write(file.read)
     end
 

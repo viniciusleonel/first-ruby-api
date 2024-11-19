@@ -19,19 +19,15 @@ class Application
     case req.path
     when '/'
       ApiController.handle_request(req, res)
-    when '/users'
-      UserController.handle_request(req, res)
-    when "/users/#{id}"
-      UserController.handle_request_by_id(req, res, id)
     when '/orders'
       OrderController.handle_request(req, res)
     when "/orders/#{id}"
-      OrderController.handle_request_by_id(req, res, id)
+      OrderController.handle_request_order_by_id(req, res, id)
     when "/upload"
       FileController.handle_request(req, res)
     else
       res.status = 404
-      res.write({ error: 'Not Found' }.to_json)
+      res.write({ error: 'Endpoint Not Found' }.to_json)
     end
 
     res.finish

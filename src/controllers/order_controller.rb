@@ -12,7 +12,7 @@ class OrderController
     end
   end
 
-  def self.handle_request_by_id(req, res, id)
+  def self.handle_request_order_by_id(req, res, id)
     if req.request_method == 'GET'
       get_order_by_id(res,id)
     else
@@ -26,13 +26,13 @@ class OrderController
     size = req.params['size'] ? req.params['size'].to_i : 5
     start_date = req.params['start_date']
     end_date = req.params['end_date']
-
     res.status = 200
     res['Content-Type'] = 'application/json'
     res.write(OrderService.get_orders(page, size, start_date, end_date))
   end
 
   def self.get_order_by_id( res, id)
+
     order_data = OrderService.get_order_by_id(id)
     if order_data
       res.status = 200

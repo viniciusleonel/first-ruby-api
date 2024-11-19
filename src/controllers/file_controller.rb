@@ -24,9 +24,6 @@ class FileController
         res.status = 400
         res.write({ error: 'File not provided' }.to_json)
       end
-    else
-      res.status = 404
-      res.write({ error: 'Not Found' }.to_json)
     end
   end
 end

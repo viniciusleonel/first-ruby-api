@@ -4,16 +4,15 @@ require_relative '../../database/config/database'
 class OrderService
   def self.get_orders_by_user_id(user_id)
     connection = Database.connect
-    orders = connection.exec_params("SELECT * FROM orders WHERE user_id = $1 ORDER by order_id", [user_id])
+    orders = connection.exec_params("SELECT * FROM orders WHERE user_id = $1 ", [user_id])
     connection.close
     orders
   end
 
   def self.get_order_by_id(id)
     connection = Database.connect
-    order = connection.exec_params("SELECT * FROM orders WHERE order_id = $1 ORDER by order_id", [id]).first
+    order = connection.exec_params("SELECT * FROM orders WHERE order_id = $1 ", [id]).first
 
-    # Aqui, extraímos e manipulamos a coluna `products` diretamente
     products = order ? JSON.parse(order['products']) : []
 
     connection.close
@@ -53,9 +52,8 @@ class OrderService
 
     total_pages = (total_orders / size.to_f).ceil
 
-    # Agora os produtos serão extraídos da coluna `products` diretamente
     orders_data = orders.map do |order|
-      products = JSON.parse(order['products']) # Manipulando os produtos como JSON
+      products = JSON.parse(order['products'])
       {
         order_id: order['order_id'],
         user_id: order['user_id'],
