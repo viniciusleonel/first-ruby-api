@@ -5,15 +5,9 @@ require_relative 'src/controllers/user_controller'
 require_relative 'src/controllers/order_controller'
 require_relative 'src/controllers/api_controller'
 require_relative 'src/controllers/file_controller'
-require_relative 'src/file_processor'
 
-# Rodar as migrações
 Migrator.rollback
 Migrator.migrate
-
-# Processar e salvar os dados do arquivo no banco
-# file_paths = ['challenge/data_1.txt']
-# FileProcessor.save_data_to_db(file_paths)
 
 class Application
   def call(env)

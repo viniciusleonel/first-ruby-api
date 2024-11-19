@@ -12,18 +12,17 @@ class OrderService
   def self.get_order_by_id(id)
     connection = Database.connect
     order = connection.exec_params("SELECT * FROM orders WHERE order_id = $1", [id]).first
+    products = ProductService.get_products_by_order_id(id)
     connection.close
-    order ? { order_id: order['order_id'], user_id: order['user_id'], total: order['total'], date: order['date'] } : nil
+    order ? { order_id: order['order_id'], user_id: order['user_id'], total: order['total'], date: order['date'], products: products } : nil
   end
 
   def self.get_orders(page, size, start_date, end_date)
     connection = Database.connect
 
-    # Calcula o offset com base na página
     offset = (page - 1) * size
     limit = size
 
-    # Se start_date e end_date forem fornecidos, filtra por data
     if start_date && end_date
       orders = connection.exec_params("SELECT * FROM orders WHERE date >= $1 AND date <= $2 LIMIT $3 OFFSET $4", [start_date, end_date, limit, offset])
     else
@@ -31,17 +30,14 @@ class OrderService
       orders = connection.exec_params("SELECT * FROM orders LIMIT $1 OFFSET $2", [limit, offset])
     end
 
-    # Contabiliza o total de pedidos, com ou sem filtro de data
     if start_date && end_date
       total_orders = connection.exec_params("SELECT COUNT(*) FROM orders WHERE date >= $1 AND date <= $2", [start_date, end_date]).first['count'].to_i
     else
       total_orders = connection.exec("SELECT COUNT(*) FROM orders").first['count'].to_i
     end
 
-    # Calcula o número total de páginas
     total_pages = (total_orders / size.to_f).ceil
 
-    # Mapeia os dados dos pedidos
     orders_data = orders.map do |order|
       {
         order_id: order['order_id'],
@@ -53,7 +49,6 @@ class OrderService
 
     connection.close
 
-    # Retorna os dados no formato JSON
     {
       orders: orders_data,
       page: page,

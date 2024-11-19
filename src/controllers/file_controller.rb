@@ -1,6 +1,4 @@
 require_relative '../services/file_service'
-require_relative '../file_processor'
-require 'async'
 
 class FileController
   def self.handle_request(req, res)
@@ -11,10 +9,8 @@ class FileController
         file = req.params['file'][:tempfile]
         filename = req.params['file'][:filename]
 
-
         file_path = FileService.save_file(file, filename)
-
-        result = FileProcessor.process_file(file_path)
+        result = FileService.process_file(file_path)
 
         res.status = 201
         res['Content-Type'] = 'application/json'
