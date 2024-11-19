@@ -50,19 +50,5 @@ class ApiService
       total_pages: user_data[:total_pages]
     }.to_json
   end
-
-  def self.save_data(data, connection)
-    user_id = data['userId']
-    user_name = data['userName']
-    order_id = data['orderId']
-    product_id = data['prodId']
-    value = data['value']
-    date = data['date']
-
-    UserService.create_user(user_id, user_name, connection)
-    OrderService.create_order(order_id, user_id, value, date, connection)
-    ProductService.create_product(product_id, order_id, value, connection)
-
-  end
 end
 

@@ -24,16 +24,22 @@ class OrderService
     limit = size
 
     if start_date && end_date
-      orders = connection.exec_params("SELECT * FROM orders WHERE date >= $1 AND date <= $2 LIMIT $3 OFFSET $4", [start_date, end_date, limit, offset])
+      orders = connection.exec_params(
+        "SELECT * FROM orders WHERE date >= $1 AND date <= $2 ORDER BY date LIMIT $3 OFFSET $4",
+        [start_date, end_date, limit, offset]
+      )
+      total_orders = connection.exec_params(
+        "SELECT COUNT(*) FROM orders WHERE date >= $1 AND date <= $2",
+        [start_date, end_date]
+      ).first['count'].to_i
     else
-      # Caso contrário, retorna todos os pedidos com a paginação
-      orders = connection.exec_params("SELECT * FROM orders LIMIT $1 OFFSET $2", [limit, offset])
-    end
-
-    if start_date && end_date
-      total_orders = connection.exec_params("SELECT COUNT(*) FROM orders WHERE date >= $1 AND date <= $2", [start_date, end_date]).first['count'].to_i
-    else
-      total_orders = connection.exec("SELECT COUNT(*) FROM orders").first['count'].to_i
+      orders = connection.exec_params(
+        "SELECT * FROM orders ORDER BY date LIMIT $1 OFFSET $2",
+        [limit, offset]
+      )
+      total_orders = connection.exec(
+        "SELECT COUNT(*) FROM orders"
+      ).first['count'].to_i
     end
 
     total_pages = (total_orders / size.to_f).ceil

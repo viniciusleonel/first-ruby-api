@@ -6,8 +6,6 @@ class ApiController
   def self.handle_request(req, res)
     if req.request_method == 'GET'
       get_data(req, res)
-    elsif req.request_method == 'POST'
-      save_data(req, res)
     else
       res.status = 404
       res.write({ error: 'Not Found' }.to_json)
@@ -17,40 +15,9 @@ class ApiController
   def self.get_data(req, res)
     page = req.params['page'] ? req.params['page'].to_i : 1
     size = req.params['size'] ? req.params['size'].to_i : 5
-
     res.status = 200
     res['Content-Type'] = 'application/json'
     res.write(ApiService.get_data(page, size))
   end
 
-  def self.save_data(req, res)
-
-    connection = Database.connect
-    connection.exec("BEGIN")
-
-    begin
-      data = JSON.parse(req.body.read)
-
-      ApiService.save_data(data, connection)
-
-      res.status = 201
-      res['Content-Type'] = 'application/json'
-      res.write({ message: 'Data saved successfully' }.to_json)
-
-      connection.exec("COMMIT")
-    rescue JSON::ParserError
-      res.status = 400
-      connection.exec("ROLLBACK")
-      res['Content-Type'] = 'application/json'
-      res.write({ error: 'Invalid JSON format' }.to_json)
-
-    rescue => e
-      res.status = 500
-      connection.exec("ROLLBACK")
-      res['Content-Type'] = 'application/json'
-      res.write({ error: 'Internal Server Error', message: e.message }.to_json)
-    end
-  ensure
-    connection.close
-  end
 end
