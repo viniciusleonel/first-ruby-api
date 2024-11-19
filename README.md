@@ -17,25 +17,7 @@ Esta API permite acessar e manipular dados de usuários, pedidos e produtos. Ela
 
 **Esta API possui três configurações:**
 
-### 1. Rodar a API em uma IDEA de sua escolha com um banco de dados na nuvem.
-   - Requisito: **Precisa ter o Ruby instalado.**
-   - Substitua o link de conexão na var de ambiente `DATABASE_LOCAL_URL` do [arquivo .env](.env)
-   - Instale as dependências executando o seguinte comando no diretório raiz do projeto:
-   
-      ```bash
-      bundle install
-      ```
-   - Inicie a aplicação executando o seguinte comando no diretório raiz do projeto:
-     (as migrations serão feitas automaticamente)
-
-      ```bash
-      rackup
-      ```
-
-
-A aplicação estará disponível em `http://localhost:9292`.
-
-### 2. Rodar toda a aplicação em um container (API + Banco de dados)
+### 1. Rodar toda a aplicação em um container (API + Banco de dados)
    - Requisito: **Precisa ter o Docker e Docker Compose instalados.**
    - Inserira o link de conexão na var de ambiente `DATABASE_LOCAL_URL` com o valor `postgres://postgres:123456@db:5432/luizalabs` no [arquivo .env](.env)
 
@@ -57,11 +39,29 @@ A aplicação estará disponível em `http://localhost:9292`.
 
    A aplicação estará disponível em `http://localhost:9292`.
 
-### 3. API em produção utilizando GitHub Actions, DockerHub e MicrosoftAzure
+### 2. API em produção utilizando GitHub Actions, DockerHub e MicrosoftAzure
    - Esta configuração é específica para rodar a API em produção, ela utiliza as configurações do arquivo arquivo [continuous delivery](.github/workflows/continuous_delivery.yml), 
 fazendo uma integração contínua e deploy automatizado utilizando **GitHub Actions**, **DockerHub** e **Microsoft Azure**.
 
 https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
+
+### 3. Rodar a API em uma IDEA de sua escolha com um banco de dados na nuvem.
+- Requisito: **Precisa ter o Ruby instalado.**
+- Substitua o link de conexão na var de ambiente `DATABASE_LOCAL_URL` do [arquivo .env](.env)
+- Instale as dependências executando o seguinte comando no diretório raiz do projeto:
+
+   ```bash
+   bundle install
+   ```
+- Inicie a aplicação executando o seguinte comando no diretório raiz do projeto:
+  (as migrations serão feitas automaticamente)
+
+   ```bash
+   rackup
+   ```
+
+
+A aplicação estará disponível em `http://localhost:9292`.
 
 ## Fluxo da API
 
