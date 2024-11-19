@@ -1,3 +1,5 @@
+require 'date'
+require 'json'
 require_relative '../models/user'
 require_relative '../../database/config/database'
 require_relative 'user_service'
