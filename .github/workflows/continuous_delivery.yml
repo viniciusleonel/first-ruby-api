@@ -20,8 +20,11 @@ jobs:
       - name: Install dependencies
         run: bundle install
 
-#      - name: Run tests
-#        run: bundle exec rspec
+      - name: Start test database
+        run: docker-compose -f docker-compose.test.yml up -d
+
+      - name: Run tests
+        run: bundle exec rspec
 
       - name: Setup Docker Buildx
         uses: docker/build-push-action@v2
