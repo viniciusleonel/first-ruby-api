@@ -99,7 +99,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     # Executar migrações antes de todos os testes
-    Migrator.rollback
+    # Migrator.rollback
     Migrator.migrate
   end
 
