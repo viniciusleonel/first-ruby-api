@@ -1,4 +1,4 @@
 example_id                                        | status | run_time        |
 ------------------------------------------------- | ------ | --------------- |
-./spec/controllers/file_controller.spec.rb[1:1:1] | passed | 0.03208 seconds |
-./spec/controllers/file_controller.spec.rb[1:2:1] | passed | 0.01279 seconds |
+./spec/controllers/file_controller_spec.rb[1:1:1] | passed | 0.01821 seconds |
+./spec/controllers/file_controller_spec.rb[1:2:1] | passed | 0.0033 seconds  |

@@ -26,27 +26,15 @@ jobs:
 
       - name: Install Docker
         run: |
-          curl -fsSL https://get.docker.com -o get-docker.sh
-          sh get-docker.sh
+          sudo apt-get update
+          sudo apt-get install -y docker.io
 
       - name: Install Docker Compose
         run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+          sudo apt-get install -y docker-compose
 
       - name: Start test database
         run: docker-compose -f docker-compose.test.yml up -d
-
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          for i in {1..30}; do
-            if pg_isready -h localhost -p 5432; then
-              echo "PostgreSQL is ready!"
-              break
-            fi
-            echo "Waiting for PostgreSQL to be ready..."
-            sleep 1
-          done
 
       - name: Run tests
         run: bundle exec rspec
