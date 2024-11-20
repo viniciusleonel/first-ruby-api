@@ -15,7 +15,7 @@ Esta API permite acessar e manipular dados de usuários, pedidos e produtos. Ela
 
 ## Configurações da API
 
-**Esta API possui três configurações:**
+**Esta API possui quatro configurações:**
 
 ### 1. Rodar toda a aplicação em um container (API + Banco de dados)
    - Requisito: **Precisa ter o Docker e Docker Compose instalados.**
@@ -62,18 +62,7 @@ https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
    rackup
    ```
 
-### 4. AMBIENTE DE TESTES - Rodar toda a aplicação em um container (API + Banco de dados)
-- Requisito: **Precisa ter o Docker e Docker Compose instalados.**
-- No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` o valor `test`
-- Insira o link de conexão na variável de ambiente `DATABASE_TEST_URL` com o valor `postgres://postgres:123456@localhost/luizalabs_test` no arquivo `.env`
-
-- Execute o seguinte comando para iniciar os containers do PostgreSQL e da aplicação:
-
-   ```bash
-   docker-compose -f docker-compose.test.yml up -d
-   ```
-
-A aplicação estará disponível em `http://localhost:9292`.
+### 4. AMBIENTE DE TESTES - Esta configuração vai ser descrita na parte de TESTES
 
 ## Fluxo da API
 
@@ -318,29 +307,27 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     }
     ```
 
-## Testes
+## Testes (Necessário a configuração de AMBIENTE DE TESTES descrita no início deste arquivo!)
 
-Este projeto utiliza o framework de testes RSpec para garantir a qualidade do código. Os testes estão localizados no diretório `spec` e cobrem as funcionalidades principais da API.
+A qualidade do código é garantida por meio de testes automatizados com RSpec, localizados no diretório `spec`, que cobrem as funcionalidades essenciais da API.
 
 ### Executando os Testes
 
-Para executar os testes, siga os passos abaixo:
+### 1. AMBIENTE DE TESTES - Rodar toda a aplicação em um container (API + Banco de dados)
+- Requisito: **Precisa ter o Docker e Docker Compose instalados.**
+- No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` o valor `test`
+- Insira o link de conexão na variável de ambiente `DATABASE_TEST_URL` com o valor `postgres://postgres:123456@localhost/luizalabs_test` no arquivo `.env`
 
-1. Certifique-se de que todas as dependências estão instaladas. Você pode fazer isso executando:
-
-   ```bash
-   bundle install
-   ```
-
-2. Execute os testes com o seguinte comando:
+- Execute o seguinte comando para iniciar o container do banco de dados de testes PostgreSQL:
 
    ```bash
-   bundle exec rspec
+   docker-compose -f docker-compose.test.yml up -d
    ```
 
-### Cobertura de Testes
-
-A cobertura de testes é gerada utilizando a gem `simplecov`. Após a execução dos testes, um relatório de cobertura será gerado no diretório `coverage`, que pode ser visualizado abrindo o arquivo `index.html` em um navegador.
+### 2. Execute os testes com o seguinte comando:
+ ```bash
+    bundle exec rspec
+ ```
 
 ### Estrutura dos Testes
 
@@ -351,7 +338,7 @@ Os testes estão organizados da seguinte forma:
 
 Para mais informações sobre como escrever e organizar testes com RSpec, consulte a [documentação oficial do RSpec](https://rspec.info/documentation/).
 
-# Descrição do Teste: `FileController`
+## Descrição do Teste: `FileController`
 
 Este teste utiliza **RSpec** para verificar o comportamento do `FileController` em uma aplicação Ruby ao lidar com o envio de arquivos via upload. Ele utiliza o módulo `Rack::Test` para simular requisições HTTP, e os testes estão organizados em dois cenários principais.
 

@@ -1,7 +1,7 @@
+require './app'
 require 'rack/test'
 require_relative '../spec_helper'
 require_relative '../../src/routes/router'
-require_relative '../../app'
 
 RSpec.describe FileController do
   include Rack::Test::Methods
