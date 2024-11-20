@@ -10,6 +10,5 @@ gem 'async', '~> 2.20'
 
 group :test do
     gem 'rspec'
-    gem 'rspec-mocks'
-    gem 'simplecov', require: false
+    gem 'rack-test'
 end

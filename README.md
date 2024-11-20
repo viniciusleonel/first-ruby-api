@@ -19,7 +19,8 @@ Esta API permite acessar e manipular dados de usuários, pedidos e produtos. Ela
 
 ### 1. Rodar toda a aplicação em um container (API + Banco de dados)
    - Requisito: **Precisa ter o Docker e Docker Compose instalados.**
-   - Inserira o link de conexão na var de ambiente `DATABASE_LOCAL_URL` com o valor `postgres://postgres:123456@db:5432/luizalabs` no [arquivo .env](.env)
+   - No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` o valor `development`
+   - Insira o link de conexão na variável de ambiente `DATABASE_LOCAL_URL` com o valor `postgres://postgres:123456@db:5432/luizalabs` no arquivo `.env`
 
    - Crie a imagem da aplicação executando o seguinte comando abaixo:
 
@@ -47,7 +48,8 @@ https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
 
 ### 3. Rodar a API em uma IDEA de sua escolha com um banco de dados na nuvem.
 - Requisito: **Precisa ter o Ruby instalado.**
-- Substitua o link de conexão na var de ambiente `DATABASE_LOCAL_URL` do [arquivo .env](.env)
+- Dentro da sua plataforma de deploy, crie uma variável de ambiente `PROFILE` o valor `production`
+- Substitua o link de conexão na var de ambiente `DATABASE_PROD_URL` do [arquivo .env](.env)
 - Instale as dependências executando o seguinte comando no diretório raiz do projeto:
 
    ```bash
@@ -60,6 +62,16 @@ https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
    rackup
    ```
 
+### 4. AMBIENTE DE TESTES - Rodar toda a aplicação em um container (API + Banco de dados)
+- Requisito: **Precisa ter o Docker e Docker Compose instalados.**
+- No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` o valor `test`
+- Insira o link de conexão na variável de ambiente `DATABASE_TEST_URL` com o valor `postgres://postgres:123456@localhost/luizalabs_test` no arquivo `.env`
+
+- Execute o seguinte comando para iniciar os containers do PostgreSQL e da aplicação:
+
+   ```bash
+   docker-compose -f docker-compose.test.yml up -d
+   ```
 
 A aplicação estará disponível em `http://localhost:9292`.
 
@@ -338,6 +350,36 @@ Os testes estão organizados da seguinte forma:
 - **spec/controllers**: Contém testes para os controladores, garantindo que as requisições HTTP sejam tratadas corretamente.
 
 Para mais informações sobre como escrever e organizar testes com RSpec, consulte a [documentação oficial do RSpec](https://rspec.info/documentation/).
+
+# Descrição do Teste: `FileController`
+
+Este teste utiliza **RSpec** para verificar o comportamento do `FileController` em uma aplicação Ruby ao lidar com o envio de arquivos via upload. Ele utiliza o módulo `Rack::Test` para simular requisições HTTP, e os testes estão organizados em dois cenários principais.
+
+## Estrutura do Teste
+
+- **Gems e Configurações**
+  - `Rack::Test`: Usado para simular requisições HTTP.
+  - `Application`: Classe principal da aplicação que gerencia as rotas.
+  - Pastas e arquivos de teste:
+    - `uploads`: Pasta destino para armazenar arquivos enviados.
+    - `spec/fixtures/data.txt`: Arquivo utilizado como exemplo nos testes.
+
+## Casos de Teste
+
+### 1. **Envio de Arquivo com Sucesso**
+- **Cenário**: Um arquivo válido é enviado.
+- **Requisição**: `POST /upload` com um arquivo anexado.
+- **Expectativas**:
+  - Status HTTP: **201 Created**.
+  - `Content-Type`: **application/json**.
+  - O arquivo é salvo no diretório configurado.
+
+### 2. **Envio Sem Arquivo**
+- **Cenário**:  Nenhum arquivo é enviado na requisição.
+- **Requisição**: `POST /upload` sem parâmetros.
+- **Expectativas**:
+  - Status HTTP: **400 Bad Request**.
+  - Corpo da resposta inclui a mensagem: "File not provided".
 
 
 ## Conclusão
