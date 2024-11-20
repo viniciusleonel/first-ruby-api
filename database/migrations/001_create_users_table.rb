@@ -15,4 +15,9 @@ class CreateUsersTable
     connection = Database.connect
     connection.exec("DROP TABLE IF EXISTS users CASCADE")
   end
+
+  def self.clean
+    connection = Database.connect
+    connection.exec("DELETE FROM users CASCADE")
+  end
 end

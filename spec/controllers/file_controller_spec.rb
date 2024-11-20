@@ -14,8 +14,6 @@ RSpec.describe FileController do
   let(:file_path) { 'spec/fixtures/data.txt' }
   let(:uploaded_file_path) { "#{uploads_folder}/data.txt" }
 
-
-
   context 'quando um arquivo é enviado' do
     it 'retorna status 201 e processa o arquivo' do
       file = Rack::Test::UploadedFile.new(file_path, 'multipart/form-data')

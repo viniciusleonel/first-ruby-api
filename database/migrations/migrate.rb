@@ -12,4 +12,10 @@ class Migrator
     CreateUsersTable.down
     puts "Migration rolled back successfully."
   end
+
+  def self.clean
+    CreateOrdersTable.clean
+    CreateUsersTable.clean
+    puts "Migration clean successfully."
+  end
 end

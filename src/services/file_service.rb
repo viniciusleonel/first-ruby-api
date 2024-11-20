@@ -101,7 +101,6 @@ class FileService
           save_user(connection, name, user_id)
           save_order_with_products(connection, order_id, user_id, value, date, product_id, value)
 
-
           current_line += 1
 
           if current_line % 100 == 0

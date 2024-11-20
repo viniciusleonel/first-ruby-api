@@ -19,4 +19,9 @@ class CreateOrdersTable
     connection = Database.connect
     connection.exec("DROP TABLE IF EXISTS orders CASCADE")
   end
+
+  def self.clean
+    connection = Database.connect
+    connection.exec("DELETE FROM orders CASCADE")
+  end
 end

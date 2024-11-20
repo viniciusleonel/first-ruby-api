@@ -313,7 +313,7 @@ A qualidade do código é garantida por meio de testes automatizados com RSpec, 
 
 ### Executando os Testes
 
-### 1. AMBIENTE DE TESTES - Rodar toda a aplicação em um container (API + Banco de dados)
+###  AMBIENTE DE TESTES - Rodar toda a aplicação em um container (API + Banco de dados)
 - Requisito: **Precisa ter o Docker e Docker Compose instalados.**
 - No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` o valor `test`
 - Insira o link de conexão na variável de ambiente `DATABASE_TEST_URL` com o valor `postgres://postgres:123456@localhost/luizalabs_test` no arquivo `.env`
@@ -324,34 +324,41 @@ A qualidade do código é garantida por meio de testes automatizados com RSpec, 
    docker-compose -f docker-compose.test.yml up -d
    ```
 
-### 2. Execute os testes com o seguinte comando:
- ```bash
-    bundle exec rspec
- ```
+- Instale as dependências executando o seguinte comando no diretório raiz do projeto:
 
-### Estrutura dos Testes
+   ```bash
+   bundle install
+   ```
+- Inicie a aplicação executando o seguinte comando no diretório raiz do projeto:
+  (as migrations serão feitas automaticamente)
 
-Os testes estão organizados da seguinte forma:
+   ```bash
+   rackup
+   ```
 
-- **spec/services**: Contém testes para os serviços da aplicação, como `ApiService`, `UserService`, e `OrderService`.
-- **spec/controllers**: Contém testes para os controladores, garantindo que as requisições HTTP sejam tratadas corretamente.
+- Execute os testes com o seguinte comando:
+   ```bash
+  bundle exec rspec
+   ```
 
-Para mais informações sobre como escrever e organizar testes com RSpec, consulte a [documentação oficial do RSpec](https://rspec.info/documentation/).
 
-## Descrição do Teste: `FileController`
-
-Este teste utiliza **RSpec** para verificar o comportamento do `FileController` em uma aplicação Ruby ao lidar com o envio de arquivos via upload. Ele utiliza o módulo `Rack::Test` para simular requisições HTTP, e os testes estão organizados em dois cenários principais.
 
 ## Estrutura do Teste
 
 - **Gems e Configurações**
   - `Rack::Test`: Usado para simular requisições HTTP.
   - `Application`: Classe principal da aplicação que gerencia as rotas.
-  - Pastas e arquivos de teste:
-    - `uploads`: Pasta destino para armazenar arquivos enviados.
-    - `spec/fixtures/data.txt`: Arquivo utilizado como exemplo nos testes.
 
-## Casos de Teste
+[//]: # (Os testes estão organizados da seguinte forma:)
+
+[//]: # (- **spec/services**: Contém testes para os serviços da aplicação, como `ApiService`, `UserService`, e `OrderService`.)
+- **spec/controllers**: Contém testes para os controladores, garantindo que as requisições HTTP sejam tratadas corretamente.
+
+## Descrição do Teste: `FileController`
+
+Este teste utiliza **RSpec** para verificar o comportamento do `FileController` em uma aplicação Ruby ao lidar com o envio de arquivos via upload. Ele utiliza o módulo `Rack::Test` para simular requisições HTTP, e os testes estão organizados em dois cenários principais.
+
+## Cenários de Teste
 
 ### 1. **Envio de Arquivo com Sucesso**
 - **Cenário**: Um arquivo válido é enviado.
@@ -368,6 +375,36 @@ Este teste utiliza **RSpec** para verificar o comportamento do `FileController` 
   - Status HTTP: **400 Bad Request**.
   - Corpo da resposta inclui a mensagem: "File not provided".
 
+
+## Descrição do Teste: `ApiController`
+Este teste verifica o comportamento do `ApiController`, que é responsável por gerenciar as requisições para o endpoint principal da API. O teste utiliza a biblioteca RSpec e o módulo Rack::Test para simular requisições HTTP e validar as respostas.
+
+## Cenários de Teste
+
+### 1. Retorno de Dados Válidos
+- **Descrição**: Este teste verifica se a requisição GET para o endpoint `/` retorna um status 200 e dados em formato JSON.
+- **Requisição**: `GET /?page=1&size=5`
+- **Expectativas**:
+  - O status da resposta deve ser 200.
+  - O tipo de conteúdo da resposta deve ser `application/json`.
+  - A resposta JSON deve conter as chaves:
+    - `data`
+    - `page`
+    - `size`
+    - `total_users`
+    - `total_pages`
+
+### 2. Retorno de Dados Vazios
+- **Descrição**: Este teste verifica se a requisição GET para o endpoint `/` retorna dados vazios quando não há usuários no banco de dados.
+- **Preparação**: O banco de dados é limpo utilizando `Migrator.clean` antes da requisição.
+- **Requisição**: `GET /?page=1&size=5`
+- **Expectativas**:
+  - O campo `data` na resposta JSON deve estar vazio.
+  - O campo `total_users` deve ser igual a 0.
+  - O campo `total_pages` deve ser igual a 0.
+
+## Conclusão
+Os testes garantem que o `ApiController` está respondendo corretamente às requisições, tanto quando há dados disponíveis quanto quando não há. Isso é fundamental para assegurar que a API funcione conforme o esperado e forneça informações precisas aos usuários.
 
 ## Conclusão
 

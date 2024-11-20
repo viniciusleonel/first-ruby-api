@@ -99,12 +99,17 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     # Executar migrações antes de todos os testes
-    # Migrator.rollback
+    Migrator.clean
     Migrator.migrate
   end
 
   config.after(:suite) do
     # Realizar rollback após todos os testes
-    # Migrator.rollback
+
+    uploaded_file_path = 'uploads/data.txt'
+    if File.exist?(uploaded_file_path)
+      FileUtils.rm(uploaded_file_path, force: true)
+    end
+    # Migrator.clean
   end
 end
