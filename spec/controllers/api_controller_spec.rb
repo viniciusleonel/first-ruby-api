@@ -7,7 +7,6 @@ require_relative '../../src/services/file_service'
 
 RSpec.describe ApiController do
   include Rack::Test::Methods
-
   def app
     Application.new
   end
