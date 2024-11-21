@@ -3,7 +3,7 @@ require 'json'
 require_relative 'database/migrations/migrate'
 require_relative 'src/routes/router'
 
-# Migrator.clean
+Migrator.clean
 Migrator.migrate
 
 class Application

@@ -177,6 +177,12 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
         "error": "Endpoint not Found"
       }
       ```
+    - **400 Bad Request**: Se o arquivo não for do formato `.txt`.
+      ```json
+      {
+          "error": "Invalid file type. Only .txt files are allowed."
+      }
+      ```
 
 ### Endpoint "/"
 
