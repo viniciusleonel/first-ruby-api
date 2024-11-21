@@ -16,6 +16,9 @@ RSpec.describe FileController do
 
   context 'quando um arquivo é enviado' do
     it 'retorna status 201 e processa o arquivo' do
+
+      Migrator.rollback
+      Migrator.migrate
       file = Rack::Test::UploadedFile.new(file_path, 'multipart/form-data')
 
       post '/upload', file: file
