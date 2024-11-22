@@ -6,18 +6,75 @@ class FileService
 
     Dir.mkdir(uploads_folder) unless Dir.exist?(uploads_folder)
 
-    filepath = "#{uploads_folder}/#{filename}"
-    # if File.exist?(filepath)
-    #   raise "Erro: O arquivo '#{filename}' já existe na pasta de uploads."
-    # end
+    filename_without_extension = filename.gsub('.txt', '')
+    if file_exists_in_db?(filename_without_extension)
+      raise "Erro: O arquivo '#{filename}' já existe no banco de dados."
+    end
+    file_id = save_file_name_to_db(filename_without_extension)
 
-    File.open(filepath, 'wb') do |f|
+    file_path = "#{uploads_folder}/#{filename}"
+    File.open(file_path, 'wb') do |f|
       f.write(file.read)
     end
 
     puts "Arquivo '#{filename}' salvo com sucesso em #{uploads_folder}/"
 
-    filepath
+    { file_path: file_path, file_id: file_id }
+  end
+
+  def self.get_files(page, size)
+    connection = Database.connect
+    offset = (page - 1) * size
+    limit = size
+    files = connection.exec_params(
+      "SELECT * FROM files LIMIT $1 OFFSET $2",
+      [limit, offset]
+    )
+    total_files = connection.exec_params(
+      "SELECT COUNT(*) FROM files"
+    ).first['count'].to_i
+    total_pages = (total_files / size.to_f).ceil
+    connection.close
+    files_list = files.map do |file|
+      {
+        file_id: file['file_id'],
+        name: file['name'],
+        date: file['date']
+      }
+    end
+
+    {
+      files: files_list,
+      page: page,
+      size: size,
+      total_files: total_files,
+      total_pages: total_pages
+    }.to_json
+  end
+
+
+  def self.save_file_name_to_db(filename_without_extension)
+    connection = Database.connect
+    begin
+      result = connection.exec_params(
+        "INSERT INTO files (name, date) VALUES ($1, $2) RETURNING file_id",
+        [filename_without_extension, Time.now]
+      )
+      result[0]['file_id']
+    ensure
+      connection.close
+    end
+  end
+
+
+  def self.file_exists_in_db?(filename_without_extension)
+    connection = Database.connect
+    result = connection.exec_params(
+      "SELECT COUNT(*) FROM files WHERE name = $1",
+      [filename_without_extension]
+    )
+    result.first['count'].to_i > 0
+    connection.close
   end
 
   def self.delete_file(filename)
@@ -81,7 +138,7 @@ class FileService
   end
 
 
-  def self.save_data_to_db(file_path, filename)
+  def self.save_data_to_db(file_path,file_id, filename)
     connection = Database.connect
 
     Async do
@@ -99,7 +156,7 @@ class FileService
           date = Date.strptime(linha[87, 8].strip, '%Y%m%d')
 
           save_user(connection, name, user_id)
-          save_order_with_products(connection, order_id, user_id, value, date, product_id, value)
+          save_order_with_products(connection, order_id, user_id, value, date, product_id, value, file_id)
 
           current_line += 1
 
@@ -118,34 +175,23 @@ class FileService
 
   private
 
-  def self.save_order_with_products(connection, order_id, user_id, total_value, date, product_id, value)
-    # Recuperar a ordem existente (se houver) e adicionar o novo produto
+  def self.save_order_with_products(connection, order_id, user_id, total_value, date, product_id, value, file_id)
+    puts "Recuperando o id do arquivo file: #{file_id}"
     existing_order = connection.exec_params(
       "SELECT products FROM orders WHERE order_id = $1", [order_id]
     ).first
-
-    # Se a ordem existir, recuperar os produtos já salvos; caso contrário, começar uma nova lista de produtos
     products = existing_order ? JSON.parse(existing_order['products']) : []
-
-    # Adicionar o novo produto à lista de produtos, mesmo que o product_id já exista
     products << { "product_id" => product_id, "value" => value }
-
-    # Salvar ou atualizar a ordem com os produtos, permitindo duplicação de produtos
-    connection.exec_params(
-      "INSERT INTO orders (order_id, user_id, total, date, products)
-         VALUES ($1, $2, $3, $4, $5)
-         ON CONFLICT (order_id)
-         DO UPDATE SET total = $3, date = $4, products = $5",
-      [order_id, user_id, total_value, date, products.to_json]
-    )
+    save_order(connection, date, file_id, order_id, products, total_value, user_id)
   end
 
-
-
-  def self.save_order(connection, date, order_id, user_id, value)
+  def self.save_order(connection, date, file_id, order_id, products, total_value, user_id)
     connection.exec_params(
-      "INSERT INTO orders (order_id, user_id, total, date) VALUES ($1, $2, $3, $4) ON CONFLICT (order_id) DO NOTHING",
-      [order_id, user_id, value, date]
+      "INSERT INTO orders (order_id, user_id, total, date, products, file_id)
+         VALUES ($1, $2, $3, $4, $5, $6)
+         ON CONFLICT (order_id)
+         DO UPDATE SET total = $3, date = $4, products = $5",
+      [order_id, user_id, total_value, date, products.to_json, file_id]
     )
   end
 

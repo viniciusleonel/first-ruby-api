@@ -22,6 +22,7 @@ class ApiService
       orders.each do |order|
         order_info = {
           order_id: order['order_id'],
+          file_id: order['file_id'],
           total: order['total'],
           date: Date.parse(order['date']).strftime('%Y-%m-%d'),
           products: []

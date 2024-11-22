@@ -2,6 +2,7 @@ Dir["./database/migrations/*.rb"].each { |file| require file }
 
 class Migrator
   def self.migrate
+    CreateFilesTable.up
     CreateUsersTable.up
     CreateOrdersTable.up
     puts "Migration ran successfully."
@@ -10,12 +11,15 @@ class Migrator
   def self.rollback
     CreateOrdersTable.down
     CreateUsersTable.down
+    CreateFilesTable.down
     puts "Migration rolled back successfully."
   end
 
   def self.clean
+    CreateFilesTable.clean
     CreateOrdersTable.clean
     CreateUsersTable.clean
     puts "Migration clean successfully."
   end
 end
+

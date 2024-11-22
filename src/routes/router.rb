@@ -15,7 +15,9 @@ class Router
     when "/orders/#{id}"
       OrderController.handle_request_order_by_id(req, res, id)
     when "/upload"
-      FileController.handle_request(req, res)
+      FileController.upload_file(req, res)
+    when "/files"
+      FileController.get_files(req, res)
     else
       res.status = 404
       res.write({ error: 'Endpoint Not Found' }.to_json)

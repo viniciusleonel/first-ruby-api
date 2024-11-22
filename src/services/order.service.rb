@@ -18,6 +18,7 @@ class OrderService
     connection.close
     order ? {
       order_id: order['order_id'],
+      file_id: order['file_id'],
       user_id: order['user_id'],
       total: order['total'],
       date: order['date'],
@@ -56,6 +57,7 @@ class OrderService
       products = JSON.parse(order['products'])
       {
         order_id: order['order_id'],
+        file_id: order['file_id'],
         user_id: order['user_id'],
         total: order['total'],
         date: order['date'],
