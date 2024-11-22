@@ -1,16 +1,10 @@
 require 'async'
-
+require 'pg'
 class FileService
-  def self.save_file(file, filename)
+  def self.save_temp_file(file, filename)
     uploads_folder = "uploads"
 
     Dir.mkdir(uploads_folder) unless Dir.exist?(uploads_folder)
-
-    filename_without_extension = filename.gsub('.txt', '')
-    if file_exists_in_db?(filename_without_extension)
-      raise "Erro: O arquivo '#{filename}' já existe no banco de dados."
-    end
-    file_id = save_file_name_to_db(filename_without_extension)
 
     file_path = "#{uploads_folder}/#{filename}"
     File.open(file_path, 'wb') do |f|
@@ -19,7 +13,17 @@ class FileService
 
     puts "Arquivo '#{filename}' salvo com sucesso em #{uploads_folder}/"
 
-    { file_path: file_path, file_id: file_id }
+    file_path
+  end
+
+  def self.save_file(filename)
+    filename_without_extension = filename.gsub('.txt', '')
+    begin
+      file_id = save_file_name_to_db(filename_without_extension)
+    rescue PG::UniqueViolation => e
+      raise "File '#{filename_without_extension}' already exists in database!"
+    end
+    file_id
   end
 
   def self.get_files(page, size)
@@ -64,17 +68,6 @@ class FileService
     ensure
       connection.close
     end
-  end
-
-
-  def self.file_exists_in_db?(filename_without_extension)
-    connection = Database.connect
-    result = connection.exec_params(
-      "SELECT COUNT(*) FROM files WHERE name = $1",
-      [filename_without_extension]
-    )
-    result.first['count'].to_i > 0
-    connection.close
   end
 
   def self.delete_file(filename)
@@ -176,7 +169,6 @@ class FileService
   private
 
   def self.save_order_with_products(connection, order_id, user_id, total_value, date, product_id, value, file_id)
-    puts "Recuperando o id do arquivo file: #{file_id}"
     existing_order = connection.exec_params(
       "SELECT products FROM orders WHERE order_id = $1", [order_id]
     ).first

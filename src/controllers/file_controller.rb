@@ -13,15 +13,16 @@ class FileController
     end
 
     begin
-      file_data = FileService.save_file(file, filename)
-      if ValidateFileFormat.valid_file_format?(file_data[:file_path])
-        result = FileService.process_file(file_data[:file_path])
+      file_path = FileService.save_temp_file(file, filename)
+      if ValidateFileFormat.valid_file_format?(file_path)
+        file_id = FileService.save_file(filename)
+        result = FileService.process_file(file_path)
         res.status = 201
         res['Content-Type'] = 'application/json'
         res.write(result.to_json)
         Thread.new do
           begin
-            FileService.save_data_to_db(file_data[:file_path], file_data[:file_id], filename)
+            FileService.save_data_to_db(file_path, file_id, filename)
           rescue StandardError => e
             puts "Erro ao salvar dados no banco: #{e.message}"
           end

@@ -8,7 +8,16 @@ Esta API foi desenvolvida para integrar dois sistemas, permitindo a transformaç
 - **ID do pedido**: possibilitando a busca de um pedido específico.
 - **Intervalo de data de compra**: permitindo filtrar pedidos com base em um intervalo de datas definido (data de início e data de fim).
 - **Paginação**: possibilitando a listagem de pedidos em páginas, facilitando a navegação por grandes volumes de dados.
-- **Verificação do documento enviado**: garantindo que o arquivo de pedidos enviado atenda ao formato esperado e contenha os dados necessários para processamento.
+- **Verificação do documento enviado**: garantindo que o arquivo de pedidos enviado atenda ao formato esperado e contenha os dados necessários para processamento. A validação inclui:
+  - **Comprimento da linha**: cada linha do arquivo deve ter exatamente 95 caracteres.
+  - **Formato dos campos**: os campos devem seguir as seguintes regras:
+    - **ID do usuário**: deve ser um número de 10 dígitos.
+    - **Nome do usuário**: deve ter no máximo 45 caracteres e conter apenas letras e espaços.
+    - **ID do pedido**: deve ser um número de 10 dígitos.
+    - **ID do produto**: deve ser um número de 10 dígitos.
+    - **Valor**: deve ser um número decimal com até duas casas decimais.
+    - **Data**: deve estar no formato `YYYYMMDD`.
+  - **Tratamento de erros**: se o arquivo não atender a qualquer uma dessas condições, a API retornará um erro informando a linha e o problema específico encontrado.
 
 
 Essas funcionalidades garantem uma manipulação eficiente dos dados de pedidos, facilitando a integração e a análise das informações.
@@ -188,6 +197,12 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
         "error": "File not provided" 
       }
       ```
+      - **400 Bad Request**: Se o arquivo já estiver sido salvo no banco de dados. (Salva somente o nome na tabela `files`)
+      ```json
+      {
+      "error": "An error occurred while processing the file: File 'data_1' already exists in database!"
+      }
+      ```
     - **404 Not Found**: Se a rota chamada não for `/upload`.
       ```json
       {
@@ -203,7 +218,13 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     - **400 Bad Request**: Se o arquivo for do formato `.txt` mas não for do padrão esperado pela API.
       ```json
       {
-          "error": "Invalid file format. The file must match the expected format."
+      "error": "An error occurred while processing the file: Error in line 1: Line has invalid length: 63 characters"
+      }
+      ```
+      Outro exemplo:
+      ```json
+      {
+      "error": "An error occurred while processing the file: Error in line 2: Error in line format: Invalid user name"
       }
       ```
 
@@ -221,6 +242,7 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
            "orders": [
              {
                "order_id": "456",
+               "file_id": "1", 
                "total": 200.50,
                "date": "2024-11-15",
                "products": [
@@ -261,6 +283,7 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
       "orders": [
         {
           "order_id": "1072",
+          "file_id": "1",
           "user_id": "100",
           "total": "650.12",
           "date": "2021-03-04",
@@ -296,6 +319,7 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
   ```json
   {
     "order_id": "753",
+    "file_id": "1",
     "user_id": "70",
     "total": "787.46",
     "date": "2021-03-08",
@@ -327,6 +351,32 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     "error": "Order Not Found"
   }
   ```
+
+### Endpoint "/orders/:id"
+
+- **GET**: Endpoint para buscar pedido por id:
+
+    ```json
+    {
+    "files": [
+      {
+        "file_id": "1",
+        "name": "data_1",
+        "date": "2024-11-22 20:37:47"
+      },
+      {
+        "file_id": "2",
+        "name": "data_2",
+        "date": "2024-11-22 20:37:53"
+      }
+     ],
+      "page": 1,
+      "size": 5,
+      "total_files": 8,
+      "total_pages": 2
+    }
+    ```
+
 
 **Todos Endpoints possuem tratamento de erro para a rota**
 - **400 Bad Request**:
