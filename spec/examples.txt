@@ -1,7 +1,7 @@
 example_id                                         | status | run_time        |
 -------------------------------------------------- | ------ | --------------- |
-./spec/controllers/api_controller_spec.rb[1:1:1]   | passed | 0.0003 seconds  |
-./spec/controllers/api_controller_spec.rb[1:2:1]   | passed | 0.3189 seconds  |
-./spec/controllers/file_controller_spec.rb[1:1:1]  | passed | 0.37363 seconds |
-./spec/controllers/file_controller_spec.rb[1:2:1]  | passed | 0.01559 seconds |
-./spec/controllers/order_controller_spec.rb[1:1:1] | passed | 0.09616 seconds |
+./spec/controllers/api_controller_spec.rb[1:1:1]   | passed | 0.00033 seconds |
+./spec/controllers/api_controller_spec.rb[1:2:1]   | passed | 0.16847 seconds |
+./spec/controllers/file_controller_spec.rb[1:1:1]  | passed | 0.44278 seconds |
+./spec/controllers/file_controller_spec.rb[1:2:1]  | passed | 0.01025 seconds |
+./spec/controllers/order_controller_spec.rb[1:1:1] | passed | 0.12144 seconds |

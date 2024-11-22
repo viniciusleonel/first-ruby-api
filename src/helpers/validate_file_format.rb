@@ -1,8 +1,14 @@
 class ValidateFileFormat
 
   def self.valid_file_format?(file_path)
-    File.readlines(file_path).all? do |line|
-      valid_line_format?(line.strip)
+    File.readlines(file_path).each_with_index do |line, index|
+      begin
+        stripped_line = line.strip
+        raise "Line has invalid length: #{line.length} characters" unless stripped_line.length == 95
+        valid_line_format?(stripped_line)
+      rescue StandardError => e
+        raise "Error in line #{index + 1}: #{e.message}"
+      end
     end
   end
 
@@ -15,44 +21,49 @@ class ValidateFileFormat
       value = line[75..86].to_s.strip
       date = line[87..94].to_s.strip
 
-      valid_user_id?(user_id)
-      valid_user_name?(user_name)
-      valid_order_id?(order_id)
-      valid_product_id?(product_id)
-      valid_value?(value)
-      valid_date?(date)
+      raise "Invalid user ID" unless valid_user_id?(user_id)
+      raise "Invalid user name" unless valid_user_name?(user_name)
+      raise "Invalid order ID" unless valid_order_id?(order_id)
+      raise "Invalid product ID" unless valid_product_id?(product_id)
+      raise "Invalid value" unless valid_value?(value)
+      raise "Invalid date" unless valid_date?(date)
 
-    rescue => e
-      raise "Error processing file, invalid format!"
+      true
+    rescue StandardError => e
+      raise "Error in line format: #{e.message}"
     end
   end
 
   def self.valid_user_id?(user_id)
-    user_id.match?(/^\d{10}$/) # 10 dígitos numéricos
+    user_id.match?(/^\d{10}$/)
   end
 
   def self.valid_user_name?(user_name)
-    user_name.length <= 45 && user_name.strip == user_name # Máximo de 45 caracteres, sem espaços à esquerda
+    sanitized_name = user_name.strip
+    return false if sanitized_name.length > 45
+    regex = /\A[a-zA-ZÀ-ÖØ-öø-ÿ'.\s]+\z/
+    sanitized_name.match?(regex) && sanitized_name.split.any? { |name| name.length >= 3 }
   end
 
   def self.valid_order_id?(order_id)
-    order_id.match?(/^\d{10}$/) # 10 dígitos numéricos
+    order_id.match?(/^\d{10}$/)
   end
 
   def self.valid_product_id?(product_id)
-    product_id.match?(/^\d{10}$/) # 10 dígitos numéricos
+    product_id.match?(/^\d{10}$/)
   end
 
   def self.valid_numeric_field?(field, length)
-    field.match?(/\A\d{#{length}}\z/) # Verifica se é numérico e tem o tamanho correto
+    field.match?(/\A\d{#{length}}\z/)
   end
 
   def self.valid_value?(value)
-    value.match?(/\A\d{10}\.\d{2}\z/) # Verifica o formato decimal (10 inteiros e 2 decimais)
+    sanitized_value = value.strip
+    sanitized_value.match?(/\A\d+\.\d{1,2}\z/)
   end
 
   def self.valid_date?(date)
-    date.match?(/\A\d{8}\z/) # Verifica o formato de data (yyyymmdd)
+    date.match?(/\A\d{8}\z/)
   end
 
 end
