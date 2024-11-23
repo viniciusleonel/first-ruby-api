@@ -18,7 +18,8 @@ RSpec.describe FileController do
   let(:invalid_txt) { 'spec/fixtures/invalid-data_2.txt' }
 
   context 'quando um arquivo é enviado' do
-    it 'retorna status 201 e processa o arquivo' do
+    it 'retorna status 201 e processa o arquivo', :first do
+      Migrator.clean
       file = Rack::Test::UploadedFile.new(valid_txt_file, 'multipart/form-data')
 
       post '/upload', file: file
@@ -47,7 +48,7 @@ RSpec.describe FileController do
       expect(last_response.status).to eq(400)
       expect(last_response.body).to include('Invalid file type. Only .txt files are allowed.')
     end
-    end
+  end
 
   context 'quando um arquivo .txt é enviado mas seu formato é inválido' do
     it 'retorna status 400 com mensagem de erro' do
@@ -58,7 +59,7 @@ RSpec.describe FileController do
       expect(last_response.status).to eq(400)
       expect(last_response.body).to include('An error occurred while processing the file: Error in line 1: Line has invalid length: 63 characters')
     end
-    end
+  end
 
   context 'quando um arquivo .txt é enviado mas falta dados' do
     it 'retorna status 400 com mensagem de erro' do

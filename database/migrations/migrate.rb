@@ -20,6 +20,13 @@ class Migrator
     CreateFilesTable.clean
     CreateUsersTable.clean
     puts "Migration clean successfully."
+    end
+
+  def self.reset
+    Migrator.rollback
+    Migrator.migrate
+    Migrator.clean
+    puts "Migration reset successfully."
   end
 end
 

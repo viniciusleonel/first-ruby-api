@@ -99,9 +99,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     # Executar migrações antes de todos os testes
-    # Migrator.clean
-    Migrator.migrate
-    Migrator.clean
+    Migrator.reset
   end
 
   config.after(:suite) do
