@@ -72,14 +72,21 @@ Essas tecnologias foram escolhidas para garantir a escalabilidade, a eficiência
    docker-compose -f docker-compose.local.yml up -d
    ```
 
-- Em um único comando `powershel`:
-   ```bash
-   docker-compose -f docker-compose.local.yml build; docker-compose -f docker-compose.local.yml up -d
-   ```
-- Em um único comando`bash`
-  ```bash
-   docker-compose -f docker-compose.local.yml build && docker-compose -f docker-compose.local.yml up -d
-   ```
+[//]: # (- Em um único comando `powershel`:)
+
+[//]: # (   ```bash)
+
+[//]: # (   docker-compose -f docker-compose.local.yml build; docker-compose -f docker-compose.local.yml up -d)
+
+[//]: # (   ```)
+
+[//]: # (- Em um único comando`bash`)
+
+[//]: # (  ```bash)
+
+[//]: # (   docker-compose -f docker-compose.local.yml build && docker-compose -f docker-compose.local.yml up -d)
+
+[//]: # (   ```)
 
 Isso irá criar primeiro um container com um banco de dados PostgreSQL (cria automaticamente a database para a aplicação).
 
@@ -93,9 +100,9 @@ A aplicação estará disponível em `http://localhost:9292`.
 
 https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
 
-### 3. Rodar a API em uma IDEA de sua escolha com um banco de dados na nuvem.
+### 3. Rodar a API em uma IDEA de sua escolha com um banco de dados PostgreSQL(Container ou nuvem).
 - Requisito: **Precisa ter o Ruby instalado.**
-- Dentro da sua plataforma de deploy, crie uma variável de ambiente `PROFILE` o valor `production`
+- Dentro da sua plataforma de deploy, crie uma variável de ambiente `PROFILE` o valor `development`
 - Substitua o link de conexão na var de ambiente `DATABASE_PROD_URL` do [arquivo .env](.env)
 - Instale as dependências executando o seguinte comando no diretório raiz do projeto:
 
@@ -129,6 +136,7 @@ A API foi projetada para gerenciar dados de usuários, pedidos e produtos, possi
 
 3. **Consulta de Dados Salvos**:
 - O endpoint `/` é responsável por retornar os dados que foram salvos no banco de dados. Ele suporta paginação por meio dos parâmetros `page` e `size`  retornando informações como a página atual, o tamanho da página, o total de páginas e o total de dados armazenados.
+- O endpoint `/files` é responsável por retornar os nomes dos arquivos que já foram enviados na API. Ele suporta paginação por meio dos parâmetros `page` e `size`  retornando informações como a página atual, o tamanho da página, o total de páginas e o total de dados armazenados.
 - O endpoint `/orders` permite a listagem de pedidos com suporte a paginação e filtros por data, utilizando os parâmetros `start_date` e `end_date` no formato `YYYY-MM-DD`. A ordenação padrão para este endpoint é por data, facilitando a busca de pedidos em um intervalo específico.
 - O endpoint `/order/:id` permite a consulta de um pedido específico pelo seu identificador único (`id`), retornando detalhes completos sobre o pedido, incluindo informações associadas.
 
@@ -149,11 +157,6 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
 
   Para fazer a requisição de envio do arquivo, você pode usar o `cURL` ou ferramentas como Postman e Insomnia.
 
-  **Usando cURL**:
-    ```bash
-    curl -X POST http://localhost:3000/upload \
-         -F "file=@/caminho/para/seu/arquivo.txt"
-    ```
 
   **Usando o Postman**:
   1. Selecione o método `POST`.
@@ -227,12 +230,6 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
       ```json
       {
       "error": "An error occurred while processing the file: File 'data_1' already exists in database!"
-      }
-      ```
-    - **404 Not Found**: Se a rota chamada não for `/upload`.
-      ```json
-      {
-        "error": "Endpoint not Found"
       }
       ```
     - **400 Bad Request**: Se o arquivo não for do formato `.txt`.
@@ -312,15 +309,28 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     {
       "orders": [
         {
-          "order_id": "1072",
+          "order_id": "523",
           "file_id": "1",
-          "user_id": "100",
-          "total": "650.12",
-          "date": "2021-03-04",
+          "user_id": "49",
+          "total": "586.74",
+          "date": "2021-09-03",
           "products": [
             {
-              "value": 650.12,
-              "product_id": 1
+              "value": 586.74,
+              "product_id": 3
+            }
+          ]
+        },
+        {
+          "order_id": "620",
+          "file_id": "1",
+          "user_id": "57",
+          "total": "1417.25",
+          "date": "2021-09-19",
+          "products": [
+            {
+              "value": 1417.25,
+              "product_id": 0
             }
           ]
         }
@@ -422,14 +432,14 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     ```
 ---
 
-## Testes (Necessário a configuração de AMBIENTE DE TESTES descrita no início deste arquivo!)
+## Testes (Necessário a configuração de AMBIENTE DE TESTES!)
 
 A qualidade do código é garantida por meio de testes automatizados com RSpec, localizados no diretório `spec`, que cobrem as funcionalidades essenciais da API.
 
 ### Executando os Testes
 
 ###  AMBIENTE DE TESTES - Rodar toda a aplicação em um container (API + Banco de dados)
-- Requisito: **Precisa ter o Docker e Docker Compose instalados.**
+- Requisito: Precisa ter o Docker e Docker Compose instalados.
 - No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` e insira o valor `test`.
 - Insira o link de conexão na variável de ambiente `DATABASE_TEST_URL` com o valor `postgres://postgres:123456@localhost/luizalabs_test` no arquivo `.env`
 
@@ -444,12 +454,17 @@ A qualidade do código é garantida por meio de testes automatizados com RSpec, 
    ```bash
    bundle install
    ```
-- Inicie a aplicação executando o seguinte comando no diretório raiz do projeto:
-  (as migrations serão feitas automaticamente)
 
-   ```bash
-   rackup
-   ```
+[//]: # (- Inicie a aplicação executando o seguinte comando no diretório raiz do projeto:)
+
+[//]: # (  &#40;as migrations serão feitas automaticamente&#41;)
+
+[//]: # ()
+[//]: # (   ```bash)
+
+[//]: # (   rackup)
+
+[//]: # (   ```)
 
 - Execute os testes com o seguinte comando:
    ```bash
