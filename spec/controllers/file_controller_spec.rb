@@ -11,15 +11,15 @@ RSpec.describe FileController do
   end
 
   let(:uploads_folder) { 'uploads' }
-  let(:file_path) { 'spec/fixtures/data.txt' }
   let(:uploaded_file_path) { "#{uploads_folder}/data.txt" }
+  let(:valid_txt_file) { 'spec/fixtures/data.txt' }
+  let(:pdf_file) { 'challenge/Desafio técnico - Vertical Logistica.pdf' }
+  let(:no_format_txt) { 'spec/fixtures/invalid-data.txt' }
+  let(:invalid_txt) { 'spec/fixtures/invalid-data_2.txt' }
 
   context 'quando um arquivo é enviado' do
     it 'retorna status 201 e processa o arquivo' do
-
-      Migrator.rollback
-      Migrator.migrate
-      file = Rack::Test::UploadedFile.new(file_path, 'multipart/form-data')
+      file = Rack::Test::UploadedFile.new(valid_txt_file, 'multipart/form-data')
 
       post '/upload', file: file
 
@@ -37,4 +37,38 @@ RSpec.describe FileController do
       expect(last_response.body).to include('File not provided')
     end
   end
+
+  context 'quando um arquivo de formato inválido é enviado' do
+    it 'retorna status 400 com mensagem de erro' do
+      file = Rack::Test::UploadedFile.new(pdf_file, 'multipart/form-data')
+
+      post '/upload', file: file
+
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to include('Invalid file type. Only .txt files are allowed.')
+    end
+    end
+
+  context 'quando um arquivo .txt é enviado mas seu formato é inválido' do
+    it 'retorna status 400 com mensagem de erro' do
+      file = Rack::Test::UploadedFile.new(no_format_txt, 'multipart/form-data')
+
+      post '/upload', file: file
+
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to include('An error occurred while processing the file: Error in line 1: Line has invalid length: 63 characters')
+    end
+    end
+
+  context 'quando um arquivo .txt é enviado mas falta dados' do
+    it 'retorna status 400 com mensagem de erro' do
+      file = Rack::Test::UploadedFile.new(invalid_txt, 'multipart/form-data')
+
+      post '/upload', file: file
+
+      expect(last_response.status).to eq(400)
+      expect(last_response.body).to include('An error occurred while processing the file: Error in line 2: Error in line format: Invalid user name')
+    end
+  end
+
 end

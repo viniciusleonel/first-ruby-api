@@ -394,7 +394,7 @@ A qualidade do código é garantida por meio de testes automatizados com RSpec, 
 
 ###  AMBIENTE DE TESTES - Rodar toda a aplicação em um container (API + Banco de dados)
 - Requisito: **Precisa ter o Docker e Docker Compose instalados.**
-- No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` o valor `test`
+- No seu arquivo `.env`, crie uma variável de ambiente `PROFILE` e insira o valor `test`.
 - Insira o link de conexão na variável de ambiente `DATABASE_TEST_URL` com o valor `postgres://postgres:123456@localhost/luizalabs_test` no arquivo `.env`
 
 - Execute o seguinte comando para iniciar o container do banco de dados de testes PostgreSQL:

@@ -16,8 +16,8 @@ class Migrator
   end
 
   def self.clean
-    CreateFilesTable.clean
     CreateOrdersTable.clean
+    CreateFilesTable.clean
     CreateUsersTable.clean
     puts "Migration clean successfully."
   end
