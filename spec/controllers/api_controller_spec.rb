@@ -30,7 +30,7 @@ RSpec.describe ApiController do
       expect(last_response.content_type).to eq('application/json')
 
       json_response = JSON.parse(last_response.body)
-      expect(json_response).to have_key('data')
+      expect(json_response).to have_key('users')
       expect(json_response).to have_key('page')
       expect(json_response).to have_key('size')
       expect(json_response).to have_key('total_users')
