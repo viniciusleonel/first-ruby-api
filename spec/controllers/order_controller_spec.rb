@@ -15,13 +15,12 @@ RSpec.describe OrderController do
   let(:invalid_id) { 75333 }
 
   before do
-    # Migrator.clean
     file = Rack::Test::UploadedFile.new('spec/fixtures/data.txt', 'multipart/form-data')
     post '/upload', file: file
   end
 
   context "quando o endpoint '/orders' é chamado" do
-    it 'retorna status 200 e dados em formato JSON', :last do
+    it 'retorna status 200 e dados em formato JSON' do
       get '/orders'
 
       expect(last_response.status).to eq(200)
@@ -36,7 +35,7 @@ RSpec.describe OrderController do
     end
     end
 
-  context "quando o endpoint '/orders/#id' é chamado passando ID como parâmetro" do
+  context "quando o endpoint '/orders/:id' é chamado passando ID como parâmetro" do
     it 'retorna status 200 e o pedido cujo ID foi chamado com formato JSON' do
       get "/orders/753"
 

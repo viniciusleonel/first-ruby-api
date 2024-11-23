@@ -45,7 +45,7 @@ class ApiService
     end
 
     {
-      data: result,
+      users: result,
       page: page,
       size: size,
       total_users: user_data[:total_users],

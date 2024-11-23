@@ -1,7 +1,6 @@
 # Documentação do Projeto
 
-Este projeto é uma API simples desenvolvida em Ruby sem framework, utilizando PostgreSQL como banco de dados e Docker
-para containerização.
+Este projeto é uma API simples desenvolvida em Ruby, utilizando PostgreSQL como banco de dados e Docker para containerização, com um pipeline de CI/CD utilizando GitHub Actions que automatiza a validação de código, testes, criação de imagens Docker e implantação contínua no Azure, garantindo entregas rápidas, confiáveis e seguras.
 
 Esta API foi desenvolvida para integrar dois sistemas, permitindo a transformação de um arquivo de pedidos desnormalizado proveniente de um sistema legado em um arquivo JSON normalizado. A API oferece funcionalidades para acessar e gerenciar dados de pedidos, incluindo a capacidade de realizar consultas gerais e aplicar filtros específicos, como:
 
@@ -24,11 +23,33 @@ Essas funcionalidades garantem uma manipulação eficiente dos dados de pedidos,
 
 [Link deploy Azure](https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/)
 
+---
+
+## Tecnologias Utilizadas
+
+Este projeto utiliza as seguintes tecnologias e ferramentas:
+
+- **Ruby**: A linguagem de programação utilizada para desenvolver a API.
+- **Rack**: Gem que fornece uma interface modular para servidores web e aplicações Ruby, facilitando a construção de aplicações web.
+- **PostgreSQL**: O sistema de gerenciamento de banco de dados relacional utilizado para armazenar os dados.
+- **Docker**: Ferramenta de containerização que permite empacotar a aplicação e suas dependências em um ambiente isolado.
+- **Docker Compose**: Utilizado para definir e executar aplicações Docker multi-container.
+- **RSpec**: Framework de testes para Ruby, utilizado para garantir a qualidade e a confiabilidade do código.
+- **Async**: Gem utilizada para processamento assíncrono, permitindo que a API continue respondendo a novas requisições enquanto processa dados em segundo plano.
+- **GitHub Actions**: Ferramenta de integração contínua e entrega contínua (CI/CD) que automatiza o processo de deploy da aplicação.
+- **Microsoft Azure**: Plataforma de nuvem utilizada para hospedar a aplicação em produção.
+
+Essas tecnologias foram escolhidas para garantir a escalabilidade, a eficiência e a facilidade de manutenção da API.
+
+---
+
 ## Pré-requisitos
 
 - Docker e Docker Compose instalados em sua máquina.
 - Ruby (versão 3.1 ou superior) instalado.
 - Clonar este repositório: https://github.com/viniciusleonel/first-ruby-api
+
+---
 
 ## Configurações da API
 
@@ -90,6 +111,8 @@ https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
 
 ### 4. AMBIENTE DE TESTES - Esta configuração vai ser descrita na parte de TESTES
 
+---
+
 ## Fluxo da API
 
 A API foi projetada para gerenciar dados de usuários, pedidos e produtos, possibilitando operações como listagem, criação e upload de arquivos. O fluxo detalhado da API é descrito abaixo:
@@ -111,6 +134,7 @@ A API foi projetada para gerenciar dados de usuários, pedidos e produtos, possi
 
 Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
 
+---
 
 ## Endpoints
 ### Endpoint "/upload"
@@ -141,6 +165,8 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     - **Content-Type**: Defina como `multipart/form-data`
   5. Selecione o arquivo `.txt` desejado no seu computador.
   6. Clique em `Send`.
+
+---
 
   **Respostas Esperadas**:
   - **201 Created**: Se o arquivo for recebido e salvo com sucesso.
@@ -228,6 +254,8 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
       }
       ```
 
+---
+
 ### Endpoint "/"
 
 - **GET**: Endpoint para listagem de todos os dados como:
@@ -235,7 +263,7 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
   - Paginação padrão por nome
      ```json
      {
-       "data": [
+       "users": [
          {
            "user_id": "123",
            "name": "John Doe",
@@ -271,6 +299,8 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
       "total_pages": 0
     }
     ```
+
+---
 
 ### Endpoint "/orders"
 
@@ -312,6 +342,8 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
   }
   ```
 
+---
+
 ### Endpoint "/orders/:id"
 
 - **GET**: Endpoint para buscar pedido por id:
@@ -352,9 +384,11 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
   }
   ```
 
-### Endpoint "/orders/:id"
+---
 
-- **GET**: Endpoint para buscar pedido por id:
+### Endpoint "/files"
+
+- **GET**: Endpoint para buscar os arquivos salvos:
 
     ```json
     {
@@ -377,14 +411,16 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
     }
     ```
 
+---
 
-**Todos Endpoints possuem tratamento de erro para a rota**
+### **Todos Endpoints possuem tratamento de erro para a rota**
 - **400 Bad Request**:
     ```json
     {
       "error": "Endpoint not Found"
     }
     ```
+---
 
 ## Testes (Necessário a configuração de AMBIENTE DE TESTES descrita no início deste arquivo!)
 
@@ -420,27 +456,36 @@ A qualidade do código é garantida por meio de testes automatizados com RSpec, 
   bundle exec rspec
    ```
 
+---
 
-
-## Estrutura do Teste
+## Estrutura dos Testes
 
 - **Gems e Configurações**
-  - `Rack::Test`: Usado para simular requisições HTTP.
-  - `Application`: Classe principal da aplicação que gerencia as rotas.
+  - `Rack::Test`: Utilizado para simular requisições HTTP e verificar as respostas.
+  - `Application`: A classe principal que gerencia as rotas da aplicação.
+  - **spec/controllers**: Diretório que contém os testes para os controladores, assegurando que as requisições sejam processadas corretamente e as respostas estejam no formato esperado.
 
-[//]: # (Os testes estão organizados da seguinte forma:)
+Este teste usa o RSpec em conjunto com o módulo Rack::Test para 
+simular requisições HTTP e validar se os controladores da aplicação 
+estão processando as rotas corretamente, retornando os status e 
+conteúdos esperados para cada tipo de requisição.
 
-[//]: # (- **spec/services**: Contém testes para os serviços da aplicação, como `ApiService`, `UserService`, e `OrderService`.)
-- **spec/controllers**: Contém testes para os controladores, garantindo que as requisições HTTP sejam tratadas corretamente.
+---
 
 ## Descrição do Teste: `FileController`
 
-Este teste utiliza **RSpec** para verificar o comportamento do `FileController` em uma aplicação Ruby ao lidar com o envio de arquivos via upload. Ele utiliza o módulo `Rack::Test` para simular requisições HTTP, e os testes estão organizados em dois cenários principais.
+Este teste verifica o comportamento do `FileController`, que gerencia 
+o upload de arquivos e a recuperação de informações sobre arquivos. 
+O teste cobre cenários como envio de arquivos .txt válidos, ausência 
+de arquivos, arquivos com formato inválido, arquivos com dados 
+incorretos e a recuperação de dados sobre arquivos enviados. 
+Ele garante que a API responda corretamente a diferentes tipos 
+de requisições e erros, retornando os status e mensagens apropriadas.
 
 ## Cenários de Teste
 
-### 1. **Envio de Arquivo com Sucesso**
-- **Cenário**: Um arquivo válido é enviado.
+### 1. **Envio de um arquivo .txt válido**
+- **Descrição**: Quando um arquivo [.txt](challenge/data_1.txt) válido é enviado retorna um status 201 e dados em formato JSON.
 - **Requisição**: `POST /upload` com um arquivo anexado.
 - **Expectativas**:
   - Status HTTP: **201 Created**.
@@ -448,19 +493,60 @@ Este teste utiliza **RSpec** para verificar o comportamento do `FileController` 
   - O arquivo é salvo no diretório configurado.
 
 ### 2. **Envio Sem Arquivo**
-- **Cenário**:  Nenhum arquivo é enviado na requisição.
+- **Descrição**: Nenhum arquivo é enviado na requisição.
 - **Requisição**: `POST /upload` sem parâmetros.
 - **Expectativas**:
   - Status HTTP: **400 Bad Request**.
   - Corpo da resposta inclui a mensagem: "File not provided".
+  
+### 3. **Envio de um arquivo com formato inválido (Arquivo que não seja .txt)**
+- **Descrição**: Um arquivo [.pdf](challenge/Desafio%20técnico%20-%20Vertical%20Logistica.pdf) é enviado na requisição.
+- **Requisição**: `POST /upload` com um arquivo .pdf anexado.
+- **Expectativas**:
+  - Status HTTP: **400 Bad Request**.
+  - Corpo da resposta inclui a mensagem: "Invalid file type. Only .txt files are allowed.".
 
+### 4. **Envio de um arquivo .txt com padrão fora do esperado**
+- **Descrição**: Um arquivo [.txt](spec/fixtures/invalid-data.txt) com um texto comum é enviado na requisição.
+- **Requisição**: `POST /upload` com um arquivo anexado.
+- **Expectativas**:
+  - Status HTTP: **400 Bad Request**.
+  - Corpo da resposta inclui a mensagem: "An error occurred while processing the file: Error in line 1: Line has invalid length: 63 characters".
+
+### 5. **Envio de um arquivo .txt com formato padrão porém falta dados**
+- **Descrição**: Um arquivo [.txt](spec/fixtures/invalid-data_2.txt) com dados faltando é enviado na requisição.
+- **Requisição**: `POST /upload` sem parâmetros.
+- **Expectativas**:
+  - Status HTTP: **400 Bad Request**.
+  - Corpo da resposta inclui a mensagem: "An error occurred while processing the file: Error in line 2: Error in line format: Invalid user name".
+
+### 6. **Retorno de Dados Válidos**
+- **Descrição**: Este teste verifica se a requisição GET para o endpoint `/files` retorna um status 200 e dados em formato JSON.
+- **Requisição**: `GET /files?page=1&size=5`.
+- **Expectativas**:
+  - O status da resposta deve ser 200.
+  - O tipo de conteúdo da resposta deve ser `application/json`.
+  - A resposta JSON deve conter as chaves:
+    - `files`
+    - `page`
+    - `size`
+    - `total_files`
+    - `total_pages`
+
+---
 
 ## Descrição do Teste: `ApiController`
-Este teste verifica o comportamento do `ApiController`, que é responsável por gerenciar as requisições para o endpoint principal da API. O teste utiliza a biblioteca RSpec e o módulo Rack::Test para simular requisições HTTP e validar as respostas.
+
+Este teste avalia o comportamento do `ApiController`, cobrindo dois cenários principais: 
+valida se endpoints inválidos retornam um `status 404` com a mensagem de erro adequada e assegura que 
+o endpoint raiz (`GET /`) responde com `status 200`, retornando dados 
+estruturados no formato `JSON` com informações como `data`, `page`, `size`, 
+`total_users` e `total_pages`. Esse processo garante a integridade e 
+confiabilidade das respostas da API conforme o esperado.
 
 ## Cenários de Teste
 
-### 1. Retorno de Dados Válidos
+### 1. **Retorno de Dados Válidos**
 - **Descrição**: Este teste verifica se a requisição GET para o endpoint `/` retorna um status 200 e dados em formato JSON.
 - **Requisição**: `GET /?page=1&size=5`
 - **Expectativas**:
@@ -473,19 +559,241 @@ Este teste verifica o comportamento do `ApiController`, que é responsável por 
     - `total_users`
     - `total_pages`
 
-### 2. Retorno de Dados Vazios
-- **Descrição**: Este teste verifica se a requisição GET para o endpoint `/` retorna dados vazios quando não há usuários no banco de dados.
-- **Preparação**: O banco de dados é limpo utilizando `Migrator.clean` antes da requisição.
-- **Requisição**: `GET /?page=1&size=5`
+### 2. **Requisição para endpoint inválido**
+- **Descrição**: Este teste retorna uma mensagem de erro se o endpoint na requisição for inválido.
+- **Requisição**: `GET /invalido`
 - **Expectativas**:
-  - O campo `data` na resposta JSON deve estar vazio.
-  - O campo `total_users` deve ser igual a 0.
-  - O campo `total_pages` deve ser igual a 0.
+  - Status HTTP: **404 Not Found**.
+  - Corpo da resposta inclui a mensagem: "Endpoint Not Found".
+
+---
+
+## Descrição do Teste: `OrderController`
+
+Este teste avalia o comportamento do `OrderController`, responsável 
+por gerenciar e processar requisições relacionadas aos pedidos na 
+aplicação. O teste cobre três cenários principais: verifica se o 
+endpoint `/orders` retorna `status 200` e dados em formato `JSON` com 
+informações como `orders`, `page`, `size`, `total_orders` e `total_pages`; 
+assegura que o endpoint `/orders/:id` retorne os detalhes do pedido, 
+incluindo `order_id`, `file_id`, `user_id`, `total`, `date` e `products` quando 
+um `ID` válido é fornecido; e valida que um `ID` de pedido inexistente 
+resulta em um `status 404` com a mensagem de erro apropriada, garantindo 
+que o sistema lida corretamente com diferentes tipos de requisição e 
+retorno.
+
+## Cenários de Teste
+
+### 1. **Retorno de Pedidos Válidos**
+- **Descrição**: Este teste verifica se a requisição GET para o endpoint `/orders` retorna um status 200 e dados em formato JSON.
+- **Requisição**: `GET /orders`
+- **Expectativas**:
+  - O status da resposta deve ser 200.
+  - O tipo de conteúdo da resposta deve ser `application/json`.
+  - A resposta JSON deve conter as chaves:
+    - `orders`
+    - `page`
+    - `size`
+    - `total_orders`
+    - `total_pages`
+
+### 2. **Retorno de Pedido Específico**
+- **Descrição**: Este teste verifica se a requisição GET para o endpoint `/orders/:id` retorna um status 200 e o pedido específico em formato JSON.
+- **Requisição**: `GET /orders/:id`
+- **Expectativas**:
+  - O status da resposta deve ser 200.
+  - O tipo de conteúdo da resposta deve ser `application/json`.
+  - A resposta JSON deve conter as chaves:
+    - `order_id`
+    - `file_id`
+    - `user_id`
+    - `total`
+    - `date`
+    - `products`
+
+### 3. **Retorno de Pedido Inexistente**
+- **Descrição**: Este teste verifica se a requisição GET para o endpoint `/orders/:id` retorna um status 404 quando o pedido especificado não existe.
+- **Requisição**: `GET /orders/:id` com um ID inválido.
+- **Expectativas**:
+  - O status da resposta deve ser 404.
+  - O corpo da resposta deve incluir a mensagem: "Order not found".
+
+---
+
+## Continuous Delivery Workflow 
+
+### Descrição
+Este workflow configura um processo de Continuous Delivery (CD) para uma aplicação Ruby utilizando GitHub Actions. Ele realiza testes automatizados, cria e envia uma imagem Docker para o Docker Hub e realiza o deploy em uma Azure Web App.
+
+---
+
+### Gatilho
+O workflow é acionado automaticamente para qualquer push na branch `main`.
+
+---
+
+## Estrutura do Workflow
+
+### Jobs
+
+### 1. Build
+#### Responsabilidade
+Configurar o ambiente, rodar os testes automatizados, criar uma imagem Docker e enviá-la para o Docker Hub.
+
+#### Executado em
+Ubuntu-latest.
+
+#### Etapas
+1. **Checkout do Código**
+  - Baixa o código da branch `main` do repositório.
+
+2. **Configuração do Ruby**
+  - Configura a versão do Ruby 3.1 para execução do projeto.
+
+3. **Instalação das Dependências**
+  - Executa `bundle install` para instalar as dependências Ruby definidas no `Gemfile`.
+
+4. **Instalação do Docker e Docker Compose**
+  - Instala Docker e Docker Compose para suporte à execução de containers.
+
+5. **Inicialização do Banco de Dados de Teste**
+  - Executa o arquivo `docker-compose.test.yml` para subir um container PostgreSQL para testes.
+
+6. **Espera pelo PostgreSQL**
+  - Aguarda o banco de dados estar pronto com o comando `pg_isready`.
+
+7. **Execução dos Testes**
+  - Roda os testes automatizados com `bundle exec rspec`.
+
+8. **Login no Docker Hub**
+  - Realiza login no Docker Hub utilizando credenciais armazenadas nos secrets (`DOCKERHUB_USERNAME` e `DOCKERHUB_TOKEN`).
+
+9. **Build e Push da Imagem Docker**
+  - Cria a imagem Docker utilizando o `Dockerfile`, com uma tag baseada no SHA do commit, e a envia para o Docker Hub.
+
+---
+
+### 2. Deploy
+#### Responsabilidade
+Realizar o deploy da aplicação na Azure Web App usando a imagem Docker criada.
+
+#### Executado em
+Ubuntu-latest.
+
+#### Dependência
+Executado apenas após o sucesso do job `build`.
+
+#### Etapas
+1. **Deploy para a Azure Web App**
+  - Realiza o deploy da imagem Docker utilizando a ação `azure/webapps-deploy@v2`.
+  - Configurações:
+    - `app-name`: Nome do aplicativo na Azure Web App (`luizalabs-ruby`).
+    - `slot-name`: Nome do slot de produção (`production`).
+    - `publish-profile`: Perfil de publicação armazenado em secrets (`AZURE_PROFILE`).
+    - `images`: Imagem Docker criada no job `build`.
+
+---
+
+### Variáveis de Ambiente
+- `DATABASE_TEST_URL`: String de conexão com o banco de dados PostgreSQL para testes.
+- `PROFILE`: Define o perfil de execução como `test`.
+
+---
+
+### Secrets Utilizados
+- `DOCKERHUB_USERNAME`: Usuário do Docker Hub.
+- `DOCKERHUB_TOKEN`: Token de autenticação no Docker Hub.
+- `AZURE_PROFILE`: Credenciais para deploy na Azure Web App.
+
+---
+
+### Arquivos Utilizados
+- **`docker-compose.test.yml`**
+  - Configuração do container de banco de dados para testes.
+- **`Dockerfile`**
+  - Configuração da imagem Docker da aplicação.
+
+---
+
+### Resultado Esperado
+1. **Build e Testes:**
+  - Testes automatizados executados com sucesso.
+  - Imagem Docker criada e enviada ao Docker Hub.
+2. **Deploy:**
+  - Aplicação implantada no ambiente de produção da Azure Web App utilizando a imagem Docker mais recente.
+
+---
+
+## Continuous Integration Workflow
+
+### Descrição
+Este workflow configura um processo de Continuous Integration (CI) para validar as alterações realizadas no código da aplicação Ruby. Ele é acionado por pull requests e executa testes automatizados para garantir a integridade e funcionalidade da aplicação.
+
+---
+
+### Gatilho
+O workflow é acionado automaticamente para cada `pull_request` no repositório.
+
+---
+
+## Estrutura do Workflow
+
+### Jobs
+
+### 1. Build
+#### Responsabilidade
+Configurar o ambiente, executar testes automatizados e verificar a integridade da aplicação.
+
+#### Executado em
+Ubuntu-latest.
+
+#### Etapas
+1. **Checkout do Código**
+  - Baixa o código atualizado da branch relacionada ao `pull_request`.
+
+2. **Configuração do Ruby**
+  - Configura a versão do Ruby 3.1 para execução do projeto.
+
+3. **Instalação das Dependências**
+  - Executa `bundle install` para instalar as dependências Ruby definidas no `Gemfile`.
+
+4. **Instalação do Docker e Docker Compose**
+  - Instala Docker e Docker Compose para suporte à execução de containers.
+
+5. **Inicialização do Banco de Dados de Teste**
+  - Executa o arquivo `docker-compose.test.yml` para subir um container PostgreSQL para testes.
+
+6. **Espera pelo PostgreSQL**
+  - Aguarda o banco de dados estar pronto com o comando `pg_isready`.
+
+7. **Execução dos Testes**
+  - Roda os testes automatizados com `bundle exec rspec`.
+
+---
+
+### Variáveis de Ambiente
+- `DATABASE_TEST_URL`: String de conexão com o banco de dados PostgreSQL para testes.
+- `PROFILE`: Define o perfil de execução como `test`.
+
+---
+
+### Arquivos Utilizados
+- **`docker-compose.test.yml`**
+  - Configuração do container de banco de dados para testes.
+
+---
+
+### Resultado Esperado
+1. Testes automatizados executados com sucesso para validar as alterações realizadas.
+2. Notificação sobre possíveis falhas para correção antes da aprovação do pull request.
+
+---
 
 ## Conclusão
-Os testes garantem que o `ApiController` está respondendo corretamente às requisições, tanto quando há dados disponíveis quanto quando não há. Isso é fundamental para assegurar que a API funcione conforme o esperado e forneça informações precisas aos usuários.
 
-## Conclusão
 
-Agora você tem uma API em Ruby sem framework, com PostgreSQL e Docker, pronta para ser utilizada e testada. Se tiver
-dúvidas ou problemas, consulte a documentação ou entre em contato com o desenvolvedor responsável.
+A API desenvolvida oferece uma solução robusta e eficiente para a integração e gerenciamento de dados de pedidos, permitindo a transformação de arquivos desnormalizados em um formato JSON estruturado. Com funcionalidades como validação de arquivos, processamento assíncrono e suporte a consultas filtradas, a API garante uma experiência de usuário fluida e responsiva.
+
+A utilização de tecnologias modernas, como Docker e PostgreSQL, assegura a escalabilidade e a facilidade de manutenção do sistema. Além disso, a implementação de CI/CD com GitHub Actions e Azure permite um fluxo de trabalho contínuo e automatizado, facilitando o deploy e a integração de novas funcionalidades de forma rápida e segura. Essa abordagem não apenas melhora a eficiência do desenvolvimento, mas também garante que a aplicação esteja sempre atualizada e em conformidade com as melhores práticas.
+
+A implementação de testes automatizados com RSpec contribui para a confiabilidade e a qualidade do código, permitindo que a API se adapte a futuras necessidades e evoluções. Com isso, a API se posiciona como uma ferramenta valiosa para empresas que buscam otimizar seus processos de gestão de pedidos e dados, promovendo uma integração eficaz entre sistemas legados e novas soluções.
