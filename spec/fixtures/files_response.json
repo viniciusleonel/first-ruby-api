@@ -1,0 +1,87 @@
+[
+  {
+    "user_id": 70,
+    "name": "Palmer Prosacco",
+    "orders": [
+      {
+        "order_id": 753,
+        "total": 1836.74,
+        "date": "2021-03-08",
+        "products": [
+          {
+            "product_id": 3,
+            "value": 1836.74
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "user_id": 75,
+    "name": "Bobbie Batz",
+    "orders": [
+      {
+        "order_id": 798,
+        "total": 1578.57,
+        "date": "2021-11-16",
+        "products": [
+          {
+            "product_id": 2,
+            "value": 1578.57
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "user_id": 49,
+    "name": "Ken Wintheiser",
+    "orders": [
+      {
+        "order_id": 523,
+        "total": 586.74,
+        "date": "2021-09-03",
+        "products": [
+          {
+            "product_id": 3,
+            "value": 586.74
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "user_id": 14,
+    "name": "Clelia Hills",
+    "orders": [
+      {
+        "order_id": 146,
+        "total": 673.49,
+        "date": "2021-11-25",
+        "products": [
+          {
+            "product_id": 1,
+            "value": 673.49
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "user_id": 57,
+    "name": "Elidia Gulgowski IV",
+    "orders": [
+      {
+        "order_id": 620,
+        "total": 1417.25,
+        "date": "2021-09-19",
+        "products": [
+          {
+            "product_id": 0,
+            "value": 1417.25
+          }
+        ]
+      }
+    ]
+  }
+]

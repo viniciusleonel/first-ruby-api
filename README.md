@@ -506,6 +506,7 @@ de requisições e erros, retornando os status e mensagens apropriadas.
   - Status HTTP: **201 Created**.
   - `Content-Type`: **application/json**.
   - O arquivo é salvo no diretório configurado.
+  - Verifica se a resposta da API está conforme as expectativas.
 
 ### 2. **Envio Sem Arquivo**
 - **Descrição**: Nenhum arquivo é enviado na requisição.

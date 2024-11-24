@@ -17,8 +17,8 @@ RSpec.describe FileController do
   let(:no_format_txt) { 'spec/fixtures/invalid-data.txt' }
   let(:invalid_txt) { 'spec/fixtures/invalid-data_2.txt' }
 
-  context 'quando um arquivo .txt válido é enviado' do
-    it 'retorna status 201 e processa o arquivo' do
+  context 'quando um arquivo .txt válido é enviado'  do
+    it 'retorna status 201, processa o arquivo e valida a resposta' do
       Migrator.clean
       file = Rack::Test::UploadedFile.new(valid_txt_file, 'multipart/form-data')
 
@@ -27,6 +27,11 @@ RSpec.describe FileController do
       expect(last_response.status).to eq(201)
       expect(last_response.content_type).to eq('application/json')
       expect(File.exist?(uploaded_file_path)).to be true
+
+      json_response = JSON.parse(last_response.body)
+      file_data = JSON.parse(File.read('spec/fixtures/files_response.json'))
+
+      expect(json_response).to eq(file_data)
     end
   end
 
