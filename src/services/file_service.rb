@@ -11,7 +11,7 @@ class FileService
       f.write(file.read)
     end
 
-    puts "Arquivo '#{filename}' salvo com sucesso em #{uploads_folder}/"
+    puts "File '#{filename}' saved successfully in #{uploads_folder}/"
 
     file_path
   end
@@ -76,9 +76,9 @@ class FileService
 
     if File.exist?(filepath)
       File.delete(filepath)
-      puts "Arquivo '#{filename}' deletado com sucesso."
+      puts "File '#{filename}' successfully deleted."
     else
-      puts "Erro: O arquivo '#{filename}' não foi encontrado."
+      puts "Error: File '#{filename}' not found."
     end
   end
 
@@ -130,7 +130,6 @@ class FileService
     end
   end
 
-
   def self.save_data_to_db(file_path,file_id, filename)
     connection = Database.connect
 
@@ -154,11 +153,11 @@ class FileService
           current_line += 1
 
           if current_line % 100 == 0
-            puts "Processando linha #{current_line} de #{total_lines}..."
+            puts "Processing line #{current_line} of #{total_lines}..."
           end
         end
 
-        puts "Processamento completo!"
+        puts "Processing complete!"
       end
     ensure
       delete_file(filename)

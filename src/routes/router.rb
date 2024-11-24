@@ -1,4 +1,3 @@
-require_relative '../controllers/user_controller'
 require_relative '../controllers/order_controller'
 require_relative '../controllers/api_controller'
 require_relative '../controllers/file_controller'
@@ -15,9 +14,9 @@ class Router
     when "/orders/#{id}"
       OrderController.handle_request_order_by_id(req, res, id)
     when "/upload"
-      FileController.upload_file(req, res)
+      FileController.handle_request(req, res)
     when "/files"
-      FileController.get_files(req, res)
+      FileController.handle_request(req, res)
     else
       res.status = 404
       res.write({ error: 'Endpoint Not Found' }.to_json)

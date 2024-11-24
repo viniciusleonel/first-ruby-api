@@ -423,13 +423,20 @@ Você pode testar a API utilizando ferramentas como o Insomnia ou Postman.
 
 ---
 
-### **Todos Endpoints possuem tratamento de erro para a rota**
+### **Todos Endpoints possuem tratamento de erro para a rota e metódo:**
 - **400 Bad Request**:
     ```json
     {
       "error": "Endpoint not Found"
     }
     ```
+- **400 Bad Request**:
+  ```json
+  {
+    "error": "Method Not Allowed"
+  }
+  ```
+    
 ---
 
 ## Testes (Necessário a configuração de AMBIENTE DE TESTES!)

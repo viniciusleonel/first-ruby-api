@@ -2,6 +2,18 @@ require_relative '../services/file_service'
 require_relative '../helpers/validate_file_format'
 
 class FileController
+
+  def self.handle_request(req, res)
+    if req.path == '/upload' && req.request_method == 'POST'
+      upload_file(req, res)
+    elsif req.path == '/files' && req.request_method == 'GET'
+      get_files(req, res)
+    else
+      res.status = 400
+      res.write({ error: 'Method Not Allowed' }.to_json)
+    end
+  end
+
   def self.upload_file(req, res)
     return res.status = 400, res.write({ error: 'File not provided' }.to_json) unless req.params['file']&.[](:tempfile)
 
@@ -24,7 +36,7 @@ class FileController
           begin
             FileService.save_data_to_db(file_path, file_id, filename)
           rescue StandardError => e
-            puts "Erro ao salvar dados no banco: #{e.message}"
+            puts "Error saving data to the database: #{e.message}"
           end
         end
       else
@@ -38,16 +50,10 @@ class FileController
   end
 
   def self.get_files(req, res)
-    if req.request_method == 'GET'
       page = req.params['page'] ? req.params['page'].to_i : 1
       size = req.params['size'] ? req.params['size'].to_i : 5
       res.status = 200
       res['Content-Type'] = 'application/json'
       res.write(FileService.get_files(page, size))
-    else
-      res.status = 404
-      res.write({ error: 'Not Found' }.to_json)
-    end
-
   end
 end

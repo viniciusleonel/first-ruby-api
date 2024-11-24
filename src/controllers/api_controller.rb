@@ -7,8 +7,8 @@ class ApiController
     if req.request_method == 'GET'
       get_data(req, res)
     else
-      res.status = 404
-      res.write({ error: 'Not Found' }.to_json)
+      res.status = 400
+      res.write({ error: 'Method Not Allowed' }.to_json)
     end
   end
 

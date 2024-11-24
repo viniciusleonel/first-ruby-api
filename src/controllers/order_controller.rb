@@ -7,8 +7,8 @@ class OrderController
     if req.request_method == 'GET'
       get_orders(req, res)
     else
-      res.status = 404
-      res.write({ error: 'Not Found' }.to_json)
+      res.status = 400
+      res.write({ error: 'Method Not Allowed' }.to_json)
     end
   end
 
@@ -16,8 +16,8 @@ class OrderController
     if req.request_method == 'GET'
       get_order_by_id(res,id)
     else
-      res.status = 404
-      res.write({ error: 'Not Found' }.to_json)
+      res.status = 400
+      res.write({ error: 'Method Not Allowed' }.to_json)
     end
   end
 
@@ -32,7 +32,6 @@ class OrderController
   end
 
   def self.get_order_by_id( res, id)
-
     order_data = OrderService.get_order_by_id(id)
     if order_data
       res.status = 200
@@ -43,5 +42,4 @@ class OrderController
       res.write({ error: 'Order Not Found' }.to_json)
     end
   end
-
 end
