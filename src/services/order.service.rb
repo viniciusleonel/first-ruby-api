@@ -2,10 +2,8 @@ require_relative '../models/user'
 require_relative '../../database/config/database'
 
 class OrderService
-  def self.get_orders_by_user_id(user_id)
-    connection = Database.connect
+  def self.get_orders_by_user_id(user_id, connection)
     orders = connection.exec_params("SELECT * FROM orders WHERE user_id = $1 ", [user_id])
-    connection.close
     orders
   end
 

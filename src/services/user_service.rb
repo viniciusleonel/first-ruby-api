@@ -2,18 +2,12 @@ require_relative '../models/user'
 require_relative '../../database/config/database'
 
 class UserService
-  def self.get_users(page, size)
-    connection = Database.connect
-
+  def self.get_users(page, size, connection)
     offset = (page - 1) * size
     limit = size
-
     users = connection.exec_params("SELECT * FROM users ORDER by name LIMIT $1 OFFSET $2", [limit, offset])
     total_users = connection.exec("SELECT COUNT(*) FROM users").first['count'].to_i
     total_pages = (total_users / size.to_f).ceil
-
-    connection.close
-
     {
       users: users,
       total_users: total_users,
