@@ -1,5 +1,3 @@
-require_relative '../../database/config/database'
-
 class User
   attr_accessor :user_id, :name, :orders
 
@@ -11,6 +9,14 @@ class User
 
   def add_order(order)
     @orders.push(order)
+  end
+
+  def to_h
+    {
+      user_id: @user_id,
+      name: @name,
+      orders: @orders
+    }
   end
 
 end

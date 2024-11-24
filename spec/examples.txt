@@ -1,13 +1,13 @@
 example_id                                         | status | run_time        |
 -------------------------------------------------- | ------ | --------------- |
-./spec/controllers/api_controller_spec.rb[1:1:1]   | passed | 0.00028 seconds |
-./spec/controllers/api_controller_spec.rb[1:2:1]   | passed | 0.08068 seconds |
-./spec/controllers/file_controller_spec.rb[1:1:1]  | passed | 0.34887 seconds |
-./spec/controllers/file_controller_spec.rb[1:2:1]  | passed | 0.00029 seconds |
-./spec/controllers/file_controller_spec.rb[1:3:1]  | passed | 0.00233 seconds |
-./spec/controllers/file_controller_spec.rb[1:4:1]  | passed | 0.00306 seconds |
-./spec/controllers/file_controller_spec.rb[1:5:1]  | passed | 0.01904 seconds |
-./spec/controllers/file_controller_spec.rb[1:7]    | passed | 0.08653 seconds |
-./spec/controllers/order_controller_spec.rb[1:1:1] | passed | 0.17218 seconds |
-./spec/controllers/order_controller_spec.rb[1:2:1] | passed | 0.17 seconds    |
-./spec/controllers/order_controller_spec.rb[1:3:1] | passed | 0.1829 seconds  |
+./spec/controllers/api_controller_spec.rb[1:1:1]   | passed | 0.00025 seconds |
+./spec/controllers/api_controller_spec.rb[1:2:1]   | passed | 0.08453 seconds |
+./spec/controllers/file_controller_spec.rb[1:1:1]  | passed | 0.39025 seconds |
+./spec/controllers/file_controller_spec.rb[1:2:1]  | passed | 0.02176 seconds |
+./spec/controllers/file_controller_spec.rb[1:3:1]  | passed | 0.00413 seconds |
+./spec/controllers/file_controller_spec.rb[1:4:1]  | passed | 0.00424 seconds |
+./spec/controllers/file_controller_spec.rb[1:5:1]  | passed | 0.00541 seconds |
+./spec/controllers/file_controller_spec.rb[1:7]    | passed | 0.12577 seconds |
+./spec/controllers/order_controller_spec.rb[1:1:1] | passed | 0.1741 seconds  |
+./spec/controllers/order_controller_spec.rb[1:2:1] | passed | 0.17244 seconds |
+./spec/controllers/order_controller_spec.rb[1:3:1] | passed | 0.1841 seconds  |

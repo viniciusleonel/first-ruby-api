@@ -12,4 +12,14 @@ class Order
   def add_product(product)
     @products.push(product)
   end
+
+  def to_h
+    {
+      order_id: @order_id,
+      file_id: @file_id,
+      total: @total,
+      date: @date,
+      products: @products.map(&:to_h)
+    }
+  end
 end

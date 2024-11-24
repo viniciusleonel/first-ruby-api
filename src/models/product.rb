@@ -5,4 +5,11 @@ class Product
     @product_id = product_id
     @value = value
   end
+
+  def to_h
+    {
+      product_id: @product_id,
+      value: @value
+    }
+  end
 end
