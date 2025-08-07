@@ -21,7 +21,8 @@ Esta API foi desenvolvida para integrar dois sistemas, permitindo a transformaç
 
 Essas funcionalidades garantem uma manipulação eficiente dos dados de pedidos, facilitando a integração e a análise das informações.
 
-[Link deploy Azure](https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/)
+<!--
+[Link deploy Azure](https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/)-->
 
 ---
 
@@ -97,6 +98,8 @@ A aplicação estará disponível em `http://localhost:9292`.
 ### 2. API em produção utilizando GitHub Actions, DockerHub e MicrosoftAzure
 - Esta configuração é específica para rodar a API em produção, ela utiliza as configurações do arquivo arquivo [continuous delivery](.github/workflows/continuous_delivery.yml),
   fazendo uma integração contínua e deploy automatizado utilizando **GitHub Actions**, **DockerHub** e **Microsoft Azure**.
+
+***Link desativado devido a descontinuação dos benefícios do plano gratuito da conta Azure.***
 
 https://luizalabs-ruby-a7dghshjbkcahyg3.eastus-01.azurewebsites.net/
 
