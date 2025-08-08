@@ -66,19 +66,20 @@ jobs:
           file: ./Dockerfile
           no-cache: true
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  # Desativado devido a descontinuação dos benefícios do plano gratuito da conta Azure.
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   environment:
+  #     name: 'production'
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'luizalabs-ruby'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AZURE_PROFILE }}
-          images: 'index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/luizalabs-ruby:${{ github.sha }}'
+  #   steps:
+  #     - name: Deploy to Azure Web App
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@v2
+  #       with:
+  #         app-name: 'luizalabs-ruby'
+  #         slot-name: 'production'
+  #         publish-profile: ${{ secrets.AZURE_PROFILE }}
+  #         images: 'index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/luizalabs-ruby:${{ github.sha }}'
